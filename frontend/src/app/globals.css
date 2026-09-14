@@ -4,16 +4,14 @@
   --color-background: #F8FAFC; /* Slate 50 */
   --color-foreground: #1E293B; /* Slate 800 */
   
-  --color-primary-50: #E3F2FD;
-  --color-primary-100: #BBDEFB;
-  --color-primary-500: #1E88E5; /* Primary Blue */
-  --color-primary-600: #1976D2;
-  --color-primary-900: #0D47A1;
+  --color-primary-50: #EAF3FA; /* Background Gradient Tint */
+  --color-primary-100: #D8E9F6; /* Ice Blue Tint */
+  --color-primary-300: #8EBAE3; /* Soft Sky Blue */
+  --color-primary-500: #4A89B8; /* Steel Blue */
+  --color-primary-700: #3D5A80; /* Slate Blue */
+  --color-primary-900: #0E294A; /* Deep Navy */
 
-  --color-accent-500: #FF8A3D; /* Secondary Orange */
-  --color-accent-600: #F57C00;
-  
-  --color-tertiary-500: #CC6C00; /* Tertiary Dark Orange */
+  --color-accent-500: #4A89B8; /* Fallback for legacy classes */
   
   --color-neutral-500: #74777E; /* Neutral Gray */
 
