@@ -4,7 +4,9 @@ import { NextResponse, type NextRequest } from 'next/server'
 export async function middleware(request: NextRequest) {
   // Presentation mode intentionally works without external credentials. Supabase
   // session enforcement is enabled automatically once both public variables exist.
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+  // Bypass if the user explicitly clicked "Use Demo Account".
+  const isDemo = request.cookies.get('demo_mode')?.value === 'true'
+  if (isDemo || !process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
     return NextResponse.next({ request })
   }
   let supabaseResponse = NextResponse.next({

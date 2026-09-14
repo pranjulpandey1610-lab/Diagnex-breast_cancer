@@ -25,7 +25,9 @@ export default function LoginPage() {
     setLoading(true);
     
     try {
-      // Demo mode deliberately keeps authentication local until Supabase is configured.
+      if (email === "demo@diagnex.local") {
+        document.cookie = "demo_mode=true; path=/";
+      }
       setAuth({ id: 1, email: email || "demo@diagnex.local", is_active: true, email_verified: true, roles: [{ id: 1, name: "patient" }] }, "demo-access-token", "demo-refresh-token");
       router.push("/dashboard");
     } catch (err: any) {
@@ -35,6 +37,7 @@ export default function LoginPage() {
   };
 
   const useDemoAccount = () => {
+    document.cookie = "demo_mode=true; path=/";
     setEmail("demo@diagnex.local");
     setAuth({ id: 1, email: "demo@diagnex.local", is_active: true, email_verified: true, roles: [{ id: 1, name: "patient" }] }, "demo-access-token", "demo-refresh-token");
     router.push("/dashboard");
