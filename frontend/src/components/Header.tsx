@@ -1,7 +1,24 @@
+'use client';
+
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+
+const navLinks = [
+  { label: 'Home', href: '/' },
+  { label: 'Features', href: '/#how' },
+  { label: 'Secure Portal', href: '/dashboard' },
+  { label: 'Find Specialist', href: '/dashboard/specialists' },
+];
 
 export default function Header() {
+  const pathname = usePathname();
+
+  const isActive = (href: string) => {
+    if (href === '/') return pathname === '/';
+    return pathname.startsWith(href.split('#')[0]) && href.split('#')[0] !== '/';
+  };
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/95 backdrop-blur-md px-6 py-4 flex justify-between items-center shadow-sm">
       <Link href="/" className="flex items-center gap-3 group">
@@ -9,19 +26,20 @@ export default function Header() {
         <span className="text-2xl font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-blue-900 to-primary-500 uppercase">Diagnex</span>
       </Link>
       
-      <nav className="hidden md:flex items-center gap-2 absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 bg-slate-100/50 backdrop-blur-md px-2 py-1.5 rounded-full border border-slate-200/50 shadow-sm z-50">
-        <Link href="/" className="px-4 py-1.5 rounded-full text-sm font-semibold text-slate-700 hover:text-primary-600 hover:bg-white hover:shadow-sm transition-all duration-300">
-          Home
-        </Link>
-        <a href="/#how" className="px-4 py-1.5 rounded-full text-sm font-semibold text-slate-700 hover:text-primary-600 hover:bg-white hover:shadow-sm transition-all duration-300">
-          Features
-        </a>
-        <Link href="/dashboard" className="px-4 py-1.5 rounded-full text-sm font-semibold text-slate-700 hover:text-primary-600 hover:bg-white hover:shadow-sm transition-all duration-300">
-          Secure Portal
-        </Link>
-        <Link href="/dashboard/specialists" className="px-4 py-1.5 rounded-full text-sm font-semibold text-slate-700 hover:text-primary-600 hover:bg-white hover:shadow-sm transition-all duration-300">
-          Find Specialist
-        </Link>
+      <nav className="hidden md:flex items-center gap-1 absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 bg-slate-100/80 backdrop-blur-md px-1.5 py-1.5 rounded-full border border-slate-200/70 shadow-sm z-50">
+        {navLinks.map((link) => (
+          <Link
+            key={link.href}
+            href={link.href}
+            className={`px-5 py-1.5 rounded-full text-sm font-semibold transition-all duration-200 whitespace-nowrap
+              ${isActive(link.href)
+                ? 'bg-white text-[#1E88E5] shadow-sm'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
+              }`}
+          >
+            {link.label}
+          </Link>
+        ))}
       </nav>
 
       <div className="flex items-center gap-4">
