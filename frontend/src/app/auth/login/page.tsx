@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 import api from "@/lib/api";
 import { useAuthStore } from "@/lib/auth";
 import Footer from "@/components/Footer";
+import Header from "@/components/Header";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -54,11 +55,12 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center p-4 relative overflow-x-hidden">
-      
-      {/* Decorative background blurs */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-600/20 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-600/20 rounded-full blur-[120px] pointer-events-none" />
+    <div className="min-h-screen flex flex-col relative overflow-x-hidden">
+      <Header />
+      <div className="flex-1 flex flex-col justify-center items-center p-4">
+        {/* Decorative background blurs */}
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-600/20 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-600/20 rounded-full blur-[120px] pointer-events-none" />
 
       <motion.div 
         className="w-full max-w-md relative z-10"
@@ -152,6 +154,7 @@ export default function LoginPage() {
           </div>
         </motion.div>
       </motion.div>
+      </div>
       <div className="w-full mt-auto">
         <Footer />
       </div>

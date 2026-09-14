@@ -151,6 +151,22 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </div>
           </div>
           
+          {/* Centered Pill Nav */}
+          <nav className="hidden xl:flex items-center gap-2 absolute left-1/2 -translate-x-1/2 bg-slate-100/50 backdrop-blur-md px-2 py-1.5 rounded-full border border-slate-200/50 shadow-sm z-50">
+            <Link href="/" className="px-4 py-1.5 rounded-full text-sm font-semibold text-slate-700 hover:text-primary-600 hover:bg-white hover:shadow-sm transition-all duration-300">
+              Home
+            </Link>
+            <a href="/#how" className="px-4 py-1.5 rounded-full text-sm font-semibold text-slate-700 hover:text-primary-600 hover:bg-white hover:shadow-sm transition-all duration-300">
+              Features
+            </a>
+            <Link href="/dashboard" className="px-4 py-1.5 rounded-full text-sm font-semibold text-slate-700 hover:text-primary-600 hover:bg-white hover:shadow-sm transition-all duration-300">
+              Secure Portal
+            </Link>
+            <Link href="/dashboard/specialists" className="px-4 py-1.5 rounded-full text-sm font-semibold text-slate-700 hover:text-primary-600 hover:bg-white hover:shadow-sm transition-all duration-300">
+              Find Specialist
+            </Link>
+          </nav>
+
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-3 bg-white px-4 py-2 rounded-full border border-slate-200 shadow-sm">
               <ShieldCheck size={16} className="text-emerald-500" />
