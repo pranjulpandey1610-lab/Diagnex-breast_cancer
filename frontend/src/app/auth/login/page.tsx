@@ -9,6 +9,7 @@ import api from "@/lib/api";
 import { useAuthStore } from "@/lib/auth";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
+import { createClient } from "@/utils/supabase/client";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -27,9 +28,26 @@ export default function LoginPage() {
     try {
       if (email === "demo@diagnex.local") {
         document.cookie = "demo_mode=true; path=/";
+        setAuth({ id: 1, email: "demo@diagnex.local", is_active: true, email_verified: true, roles: [{ id: 1, name: "patient" }] }, "demo-access-token", "demo-refresh-token");
+        router.push("/dashboard");
+        return;
       }
-      setAuth({ id: 1, email: email || "demo@diagnex.local", is_active: true, email_verified: true, roles: [{ id: 1, name: "patient" }] }, "demo-access-token", "demo-refresh-token");
-      router.push("/dashboard");
+
+      // Real Supabase Auth for actual accounts
+      const supabase = createClient();
+      const { data, error: signInError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (signInError) {
+        throw signInError;
+      }
+
+      if (data.session) {
+        setAuth({ id: 1, email: email, is_active: true, email_verified: true, roles: [{ id: 1, name: "patient" }] }, data.session.access_token, data.session.refresh_token);
+        router.push("/dashboard");
+      }
     } catch (err: any) {
       setError(err.message || "Failed to login. Please try again.");
       setLoading(false);
