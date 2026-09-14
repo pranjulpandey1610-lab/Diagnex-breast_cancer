@@ -42,13 +42,13 @@ export default function ProfilePage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-white tracking-tight">My Profile</h1>
+        <h1 className="text-3xl font-bold text-slate-900 tracking-tight">My Profile</h1>
         <p className="text-slate-400 mt-1">Manage your personal and medical information</p>
       </div>
 
       <div className="glass-panel p-8">
         <form onSubmit={handleSave} className="space-y-6">
-          <h2 className="text-xl font-semibold text-white border-b border-slate-700 pb-2">Personal Details</h2>
+          <h2 className="text-xl font-semibold text-slate-900 border-b border-slate-700 pb-2">Personal Details</h2>
           <div className="grid grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-medium text-slate-300 mb-1.5">First Name</label>
@@ -72,7 +72,7 @@ export default function ProfilePage() {
             </div>
           </div>
 
-          <h2 className="text-xl font-semibold text-white border-b border-slate-700 pb-2 mt-8">Emergency Contact</h2>
+          <h2 className="text-xl font-semibold text-slate-900 border-b border-slate-700 pb-2 mt-8">Emergency Contact</h2>
           <div className="grid grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-medium text-slate-300 mb-1.5">Contact Name</label>

@@ -19,7 +19,7 @@ export default function SecurityPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-white tracking-tight">Account Security</h1>
+        <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Account Security</h1>
         <p className="text-slate-400 mt-1">Manage your password and active sessions</p>
       </div>
 
@@ -28,7 +28,7 @@ export default function SecurityPage() {
         <div className="glass-panel p-8">
           <div className="flex items-center space-x-3 mb-6">
             <Key className="w-6 h-6 text-blue-400" />
-            <h2 className="text-xl font-semibold text-white">Change Password</h2>
+            <h2 className="text-xl font-semibold text-slate-900">Change Password</h2>
           </div>
           
           <form onSubmit={handlePasswordChange} className="space-y-4">
@@ -53,13 +53,13 @@ export default function SecurityPage() {
           <div className="glass-panel p-8">
             <div className="flex items-center space-x-3 mb-6">
               <Smartphone className="w-6 h-6 text-green-400" />
-              <h2 className="text-xl font-semibold text-white">Active Sessions</h2>
+              <h2 className="text-xl font-semibold text-slate-900">Active Sessions</h2>
             </div>
             
             <div className="space-y-4">
               <div className="bg-slate-900/50 rounded-lg p-4 border border-slate-700/50 flex items-center justify-between">
                 <div>
-                  <div className="text-white font-medium">Mac OS • Chrome</div>
+                  <div className="text-slate-900 font-medium">Mac OS • Chrome</div>
                   <div className="text-sm text-slate-400">Mumbai, India • Active Now</div>
                 </div>
                 <div className="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded">Current</div>
@@ -67,7 +67,7 @@ export default function SecurityPage() {
               
               <div className="bg-slate-900/50 rounded-lg p-4 border border-slate-700/50 flex items-center justify-between">
                 <div>
-                  <div className="text-white font-medium">iOS • Safari</div>
+                  <div className="text-slate-900 font-medium">iOS • Safari</div>
                   <div className="text-sm text-slate-400">Delhi, India • Last active 2h ago</div>
                 </div>
                 <button className="text-sm text-red-400 hover:text-red-300 transition-colors">Revoke</button>
