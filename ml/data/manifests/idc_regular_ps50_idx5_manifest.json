@@ -1,0 +1,19 @@
+{
+  "dataset_id": "idc_regular_ps50_idx5",
+  "created_at": "2026-09-14T14:18:47.109217+00:00",
+  "archive_sha256": "55022d403bb3b738ef5df518e62a11d6de52daddaf3850e05134e669133b51c9",
+  "source": "https://andrewjanowczyk.com/wp-static/IDC_regular_ps50_idx5.zip",
+  "records": 277524,
+  "source_subjects": 279,
+  "patient_grouped_split": true,
+  "split_label_counts": {
+    "test:0": 32267,
+    "test:1": 10978,
+    "train:0": 137619,
+    "train:1": 56650,
+    "validation:0": 28852,
+    "validation:1": 11158
+  },
+  "research_only": true,
+  "not_for_patient_diagnosis": true
+}

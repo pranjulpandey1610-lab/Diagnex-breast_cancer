@@ -1,1 +1,71 @@
-{"status":"no_model_trained","research_only":true,"patient_access":false}
+{
+  "model_version": "idc_patch_sgd_v1",
+  "created_at": "2026-09-14T15:58:00.790605+00:00",
+  "research_only": true,
+  "not_for_patient_diagnosis": true,
+  "task": "IDC-positive versus IDC-negative histopathology patch annotation",
+  "input": "50x50 H&E histopathology PNG patch; resized to grayscale 25x25 for baseline",
+  "patient_level_split": true,
+  "split_rows": {
+    "train": 194269,
+    "validation": 40010,
+    "test": 43245
+  },
+  "training_class_weight": {
+    "0": 0.7058218705265988,
+    "1": 1.7146425419240954
+  },
+  "test_label_balance": {
+    "0": 32267,
+    "1": 10978
+  },
+  "sensitivity": 0.8048824922572417,
+  "specificity": 0.6441565686304893,
+  "precision": 0.4348853233585983,
+  "f1": 0.5646728016359919,
+  "roc_auc": 0.8099402274460483,
+  "pr_auc": 0.5892021826725952,
+  "confusion_matrix": [
+    [
+      20785,
+      11482
+    ],
+    [
+      2142,
+      8836
+    ]
+  ],
+  "false_negative_count": 2142,
+  "false_positive_count": 11482,
+  "calibration_curve": {
+    "mean_predicted_probability": [
+      2.016955621900689e-05,
+      0.0002757100860523127,
+      0.0025011603610638417,
+      0.022594713737732836,
+      0.15907588166842115,
+      0.590956743579399,
+      0.9134609141601506,
+      0.9918016234192715,
+      0.9997381563599423,
+      0.999996883986665
+    ],
+    "fraction_of_positives": [
+      0.024508670520231216,
+      0.05064754856614246,
+      0.07953757225433526,
+      0.11586493987049029,
+      0.1623121387283237,
+      0.20952821461609622,
+      0.25161887141535616,
+      0.37942196531791905,
+      0.5804810360777058,
+      0.6846242774566474
+    ]
+  },
+  "limitations": [
+    "Single public source dataset; no external test set.",
+    "Patch-level source annotations are not a patient-level conclusion.",
+    "This baseline does not process DICOM mammograms, ultrasound, MRI, reports, or photographs."
+  ]
+}

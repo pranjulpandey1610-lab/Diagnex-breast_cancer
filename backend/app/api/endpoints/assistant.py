@@ -20,6 +20,30 @@ from app.core.audit import log_audit_event
 
 router = APIRouter()
 
+@router.get("/session/{session_id}")
+def get_session(
+    session_id: UUID4,
+    db: Session = Depends(deps.get_db),
+    current_user: User = Depends(deps.require_role(["patient"])),
+):
+    """Return only the requesting patient's editable assistant state."""
+    session = db.query(BreastAwarenessSession).filter(
+        BreastAwarenessSession.id == session_id,
+        BreastAwarenessSession.patient_id == current_user.patient_profile.id,
+    ).first()
+    if not session:
+        raise HTTPException(status_code=404, detail="Session not found")
+    latest_prompt = db.query(BreastSymptomEntry).filter(
+        BreastSymptomEntry.session_id == session.id,
+        BreastSymptomEntry.symptom_type == "system_prompt",
+    ).order_by(BreastSymptomEntry.created_at.desc()).first()
+    return {
+        "session_id": str(session.id),
+        "status": session.status.value if hasattr(session.status, "value") else session.status,
+        "cumulative_state": session.cumulative_state or {"side": None, "location": [], "symptoms": [], "context": []},
+        "assistant_message": latest_prompt.value if latest_prompt else "Describe any new or persistent breast change you have noticed.",
+    }
+
 @router.post("/session", status_code=status.HTTP_201_CREATED, response_model=SessionResponse)
 def start_session(
     db: Session = Depends(deps.get_db),
@@ -134,12 +158,13 @@ def finalize_summary(
         raise HTTPException(status_code=400, detail="Summary already finalized")
         
     # Run strict triage engine
-    triage_result_category = triage_service.evaluate(payload.finalized_entities)
+    triage = triage_service.evaluate(payload.finalized_entities)
     
     triage_obj = BreastTriageResult(
         session_id=session.id,
-        triage_level=triage_result_category,
-        disclaimer="⚠️ This is NOT a medical diagnosis. The recommendations are based on standard clinical guidelines for symptom presentation."
+        triage_level=triage["label"],
+        recommended_action=triage["action"],
+        disclaimer="This organizes user-entered information. It is not a diagnosis and does not replace clinical examination, imaging interpretation, pathology testing, or advice from a qualified healthcare professional."
     )
     db.add(triage_obj)
 
@@ -158,6 +183,10 @@ def finalize_summary(
     
     return {
         "triage_category": triage_obj.triage_level,
+        "guidance_level": triage["level"],
+        "information_completion_percent": triage["completion_percent"],
+        "recommended_action": triage["action"],
+        "assessment_options": triage["assessment_options"],
         "disclaimer": triage_obj.disclaimer,
         "finalized_entities": summary.structured_summary
     }

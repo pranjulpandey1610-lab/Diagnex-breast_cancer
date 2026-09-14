@@ -17,5 +17,9 @@ class SessionResponse(BaseModel):
 
 class SummaryResponse(BaseModel):
     triage_category: str
+    guidance_level: str
+    information_completion_percent: int
+    recommended_action: str
+    assessment_options: List[str] = []
     disclaimer: str
     finalized_entities: Dict[str, Any]
