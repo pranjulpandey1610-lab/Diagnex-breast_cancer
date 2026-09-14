@@ -51,12 +51,8 @@ const navGroups = [
       { href: '/dashboard/specialists', label: 'Specialists', icon: MapPin },
     ]
   },
-  {
-    label: 'Research',
-    items: [
-      { href: '/dashboard/research', label: 'ML Models & Data', icon: Database },
-    ]
-  },
+
+
   {
     label: 'Settings',
     items: [
