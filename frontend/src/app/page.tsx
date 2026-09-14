@@ -64,45 +64,85 @@ export default function Home() {
         
         {/* Hero Section */}
         <motion.section 
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="max-w-4xl text-center space-y-8 mb-32"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, staggerChildren: 0.2 }}
+          className="max-w-4xl text-center space-y-8 mb-32 relative"
         >
+          {/* Pulsing glow behind logo */}
+          <motion.div 
+            animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute top-10 left-1/2 -translate-x-1/2 w-64 h-64 bg-primary-400/20 rounded-full blur-[80px] -z-10"
+          />
+
           {/* HUGE LOGO HIGHLIGHT */}
-          <div className="flex flex-col items-center justify-center mb-8 mt-4">
+          <motion.div 
+            initial={{ scale: 0.8, opacity: 0, y: 20 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            transition={{ delay: 0.1, type: "spring", stiffness: 200, damping: 20 }}
+            className="flex flex-col items-center justify-center mb-8 mt-4"
+          >
             <motion.img 
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+              animate={{ y: [0, -12, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
               src="/logo.png" 
               alt="Diagnex Logo" 
               className="w-48 h-48 md:w-72 md:h-72 object-contain drop-shadow-2xl" 
             />
-          </div>
+          </motion.div>
           
-          <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-slate-900 leading-tight mt-6">
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.6 }}
+            className="text-3xl md:text-5xl font-extrabold tracking-tight text-slate-900 leading-tight mt-6"
+          >
             Breast health support,<br />
-            <span className="text-gradient font-black">organized around safer next steps.</span>
-          </h2>
+            <span className="text-gradient font-black relative inline-block">
+              organized around safer next steps.
+              <motion.span 
+                initial={{ width: "0%" }}
+                animate={{ width: "100%" }}
+                transition={{ delay: 1, duration: 1, ease: "easeOut" }}
+                className="absolute -bottom-2 left-0 h-1.5 bg-gradient-to-r from-primary-400 to-accent-400 rounded-full opacity-50"
+              />
+            </span>
+          </motion.h2>
           
-          <p className="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.6 }}
+            className="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed"
+          >
             Clearer breast-health information. Safer next steps. Diagnex helps you document changes and organize records—without replacing clinical care.
-          </p>
+          </motion.p>
           
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6">
-            <Link className="btn-primary py-3.5 px-8 text-lg w-full sm:w-auto shadow-lg shadow-primary-500/20" href="/auth/login">
-              Start Breast Awareness Check <ArrowRight size={20} className="ml-2" />
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.6 }}
+            className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6"
+          >
+            <Link className="btn-primary py-3.5 px-8 text-lg w-full sm:w-auto shadow-lg shadow-primary-500/20 hover:shadow-xl hover:shadow-primary-500/40 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group" href="/auth/login">
+              <span className="relative z-10 flex items-center">Start Breast Awareness Check <ArrowRight size={20} className="ml-2 group-hover:translate-x-1 transition-transform" /></span>
+              <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
             </Link>
-            <a className="btn-secondary py-3.5 px-8 text-lg w-full sm:w-auto" href="#how">
+            <a className="btn-secondary py-3.5 px-8 text-lg w-full sm:w-auto hover:-translate-y-1 transition-transform duration-300" href="#how">
               Explore How It Works
             </a>
-          </div>
+          </motion.div>
 
-          <div className="flex items-center justify-center gap-3 pt-12 text-sm text-slate-500">
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8, duration: 1 }}
+            className="flex items-center justify-center gap-3 pt-12 text-sm text-slate-500"
+          >
             <ShieldCheck size={20} className="text-emerald-500" />
             <span><b className="text-slate-700">Private by design.</b> Diagnex is a secure prototype. It is not a diagnosis.</span>
-          </div>
+          </motion.div>
         </motion.section>
 
         {/* Features Grid */}
@@ -110,11 +150,12 @@ export default function Home() {
           {features.map((feature, i) => (
             <motion.article 
               key={feature.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1, duration: 0.5 }}
-              className="glass-panel p-8 relative overflow-hidden group border-slate-200"
+              initial={{ opacity: 0, y: 30, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, margin: "-100px" }}
+              whileHover={{ y: -5, boxShadow: "0 20px 40px -15px rgba(30,136,229,0.15)" }}
+              transition={{ delay: i * 0.1, duration: 0.5, ease: "easeOut" }}
+              className="glass-panel p-8 relative overflow-hidden group border-slate-200 transition-all duration-300"
             >
               <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary-500/5 to-transparent rounded-bl-full -z-10 transition-transform group-hover:scale-110`} />
               
