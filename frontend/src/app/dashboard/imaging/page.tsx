@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { 
   UploadCloud, 
@@ -32,22 +32,7 @@ export default function ImagingPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchScans = async () => {
-      try {
-        const { data } = await api.get('/imaging/studies');
-        setScans(data.map((s: any) => ({
-          ...s,
-          doctor: 'Clinical Review Pending'
-        })));
-      } catch (err: any) {
-        setError(err.response?.data?.detail || 'Failed to load imaging studies');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchScans();
-  }, []);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -62,26 +47,74 @@ export default function ImagingPage() {
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
-    startMockUpload();
+    
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      const file = e.dataTransfer.files[0];
+      startUpload(file);
+    }
   };
 
-  const startMockUpload = () => {
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+      startUpload(file);
+    }
+  };
+
+  const fetchScans = async () => {
+    try {
+      const { data } = await api.get('/imaging/studies');
+      setScans(data.map((s: any) => ({
+        ...s,
+        doctor: 'Clinical Review Pending'
+      })));
+    } catch (err: any) {
+      setError(err.response?.data?.detail || 'Failed to load imaging studies');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchScans();
+  }, []);
+
+  const startUpload = async (file: File) => {
     setIsUploading(true);
     setUploadProgress(0);
-    const interval = setInterval(() => {
-      setUploadProgress(prev => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          setTimeout(() => {
-            setIsUploading(false);
-            setUploadProgress(0);
-          }, 1000);
-          return 100;
+    setError(null);
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      await api.post('/imaging/dicom', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        },
+        onUploadProgress: (progressEvent) => {
+          if (progressEvent.total) {
+            const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+            setUploadProgress(percentCompleted);
+          }
         }
-        return prev + 10;
       });
-    }, 200);
+      
+      // Wait a moment so user sees 100%
+      setTimeout(() => {
+        setIsUploading(false);
+        setUploadProgress(0);
+        fetchScans();
+      }, 1000);
+      
+    } catch (err: any) {
+      setIsUploading(false);
+      setUploadProgress(0);
+      setError(err.response?.data?.detail || 'Failed to upload file');
+    }
   };
+
+
 
   return (
     <div className="max-w-6xl mx-auto space-y-8 pb-12">
@@ -148,7 +181,14 @@ export default function ImagingPage() {
                 <p className="text-sm text-slate-500 mb-6 max-w-[200px]">
                   Support for DICOM, PDF, JPG, and PNG up to 50MB.
                 </p>
-                <button onClick={startMockUpload} className="btn-secondary w-full">
+                <input 
+                  type="file" 
+                  ref={fileInputRef} 
+                  onChange={handleFileSelect} 
+                  className="hidden" 
+                  accept=".dcm,.pdf,.jpg,.jpeg,.png"
+                />
+                <button onClick={() => fileInputRef.current?.click()} className="btn-secondary w-full">
                   Browse Files
                 </button>
               </>
