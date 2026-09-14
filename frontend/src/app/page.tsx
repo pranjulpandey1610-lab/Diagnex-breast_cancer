@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import { Activity, ArrowRight, FileLock2, MapPin, ScanLine, ShieldCheck, Sparkles, ChevronRight, Ribbon } from 'lucide-react';
 import { motion } from 'framer-motion';
+import Footer from '@/components/Footer';
 
 const features = [
   {
@@ -44,9 +45,9 @@ export default function Home() {
           <span className="text-2xl font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-blue-900 to-primary-500 uppercase">Diagnex</span>
         </Link>
         
-        <nav className="hidden md:flex items-center gap-8 font-medium text-slate-600 text-sm">
+        <nav className="hidden md:flex items-center gap-8 font-medium text-slate-600 text-sm z-50">
           <Link href="/" className="hover:text-primary-600 transition-colors">Home</Link>
-          <a href="#how" className="hover:text-primary-600 transition-colors">How it Works</a>
+          <a href="/#how" className="hover:text-primary-600 transition-colors">How it Works</a>
           <Link href="/dashboard" className="hover:text-primary-600 transition-colors">Portal</Link>
           <Link href="/dashboard/specialists" className="hover:text-primary-600 transition-colors">Directory</Link>
         </nav>
@@ -70,6 +71,44 @@ export default function Home() {
           transition={{ duration: 0.8, staggerChildren: 0.2 }}
           className="max-w-4xl text-center space-y-8 mb-32 relative"
         >
+          {/* Floating Slogans - Left Space */}
+          <motion.div 
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 0.04, x: 0 }}
+            transition={{ delay: 1, duration: 2 }}
+            className="absolute top-10 -left-64 -rotate-12 text-5xl font-black whitespace-nowrap pointer-events-none select-none text-slate-900"
+          >
+            EARLY DETECTION SAVES LIVES
+          </motion.div>
+          
+          <motion.div 
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 0.04, x: 0 }}
+            transition={{ delay: 1.5, duration: 2 }}
+            className="absolute top-64 -left-80 rotate-6 text-4xl font-black whitespace-nowrap pointer-events-none select-none text-slate-900"
+          >
+            SUPPORT & EMPOWERMENT
+          </motion.div>
+
+          {/* Floating Slogan and Lady Sticker - Right Space */}
+          <motion.div 
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 0.03, x: 0 }}
+            transition={{ delay: 1.2, duration: 2 }}
+            className="absolute top-20 -right-60 rotate-12 text-5xl font-black whitespace-nowrap pointer-events-none select-none text-slate-900"
+          >
+            KNOWLEDGE IS POWER
+          </motion.div>
+
+          <motion.img 
+            initial={{ opacity: 0, scale: 0.8, x: 50 }}
+            animate={{ opacity: 0.08, scale: 1, x: 0 }}
+            transition={{ delay: 1.5, duration: 2 }}
+            src="/lady-sticker.jpg"
+            alt=""
+            className="absolute top-40 -right-72 w-80 h-auto pointer-events-none select-none mix-blend-multiply"
+          />
+
           {/* Pulsing glow behind logo */}
           <motion.div 
             animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
@@ -205,63 +244,7 @@ export default function Home() {
 
       </main>
 
-      <footer className="border-t border-slate-200 mt-auto bg-white py-16 px-6 relative z-10 shadow-inner">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8 mb-12">
-          <div className="md:col-span-1 space-y-4">
-            <Link href="/" className="flex items-center gap-3">
-              <img src="/logo.png" alt="Diagnex Logo" className="w-8 h-8 object-contain" />
-              <span className="text-xl font-black tracking-widest text-slate-800 uppercase">Diagnex</span>
-            </Link>
-            <p className="text-sm text-slate-500 leading-relaxed">
-              Clearer breast-health information. Safer next steps. Diagnex helps you document changes and organize records.
-            </p>
-          </div>
-          
-          <div>
-            <h3 className="font-bold text-slate-900 mb-4 uppercase tracking-wider text-xs">Platform</h3>
-            <ul className="space-y-3 text-sm text-slate-500">
-              <li><Link href="/dashboard" className="hover:text-primary-600 transition-colors">Patient Portal</Link></li>
-              <li><Link href="/dashboard/awareness" className="hover:text-primary-600 transition-colors">Symptom Checker</Link></li>
-              <li><Link href="/dashboard/upload" className="hover:text-primary-600 transition-colors">Secure Uploads</Link></li>
-              <li><Link href="/dashboard/specialists" className="hover:text-primary-600 transition-colors">Provider Directory</Link></li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="font-bold text-slate-900 mb-4 uppercase tracking-wider text-xs">Resources</h3>
-            <ul className="space-y-3 text-sm text-slate-500">
-              <li><a href="#how" className="hover:text-primary-600 transition-colors">How it Works</a></li>
-              <li><Link href="/dashboard/research" className="hover:text-primary-600 transition-colors">ML Research Data</Link></li>
-              <li><a href="#" className="hover:text-primary-600 transition-colors">Privacy & Security</a></li>
-              <li><a href="#" className="hover:text-primary-600 transition-colors">HIPAA Compliance</a></li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="font-bold text-slate-900 mb-4 uppercase tracking-wider text-xs">Company</h3>
-            <ul className="space-y-3 text-sm text-slate-500">
-              <li><a href="#" className="hover:text-primary-600 transition-colors">About Us</a></li>
-              <li><a href="#" className="hover:text-primary-600 transition-colors">Team</a></li>
-              <li><a href="#" className="hover:text-primary-600 transition-colors">Contact</a></li>
-              <li><a href="https://github.com/pranjulpandey1610-lab/Diagnex-breast_cancer" target="_blank" className="hover:text-primary-600 transition-colors">GitHub Repository</a></li>
-            </ul>
-          </div>
-        </div>
-        
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 pt-8 border-t border-slate-100 text-sm text-slate-500">
-          <div className="flex items-center gap-2">
-            <Activity size={16} className="text-primary-500" /> © 2026 Diagnex. All rights reserved.
-          </div>
-          <div className="flex gap-6">
-            <a href="#" className="hover:text-slate-900 transition-colors">Terms</a>
-            <a href="#" className="hover:text-slate-900 transition-colors">Privacy</a>
-            <a href="#" className="hover:text-slate-900 transition-colors">Cookies</a>
-          </div>
-          <div className="px-3 py-1 bg-amber-50 text-amber-600 rounded-full border border-amber-200 text-xs font-bold uppercase tracking-widest">
-            Prototype Demo Mode
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Activity, User, Mail, Lock, ArrowRight, ShieldCheck } from "lucide-react";
 import { motion } from "framer-motion";
 import { useAuthStore } from "@/lib/auth";
+import Footer from "@/components/Footer";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -164,6 +165,9 @@ export default function RegisterPage() {
           </div>
         </motion.div>
       </motion.div>
+      <div className="w-full mt-auto">
+        <Footer />
+      </div>
     </div>
   );
 }
