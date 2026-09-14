@@ -4,13 +4,13 @@ import { Activity } from 'lucide-react';
 export default function Footer() {
   return (
     <footer className="border-t border-slate-200 mt-auto bg-white py-16 px-6 relative z-10 shadow-inner w-full">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8 mb-12">
-        <div className="md:col-span-1 space-y-4">
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between gap-12 md:gap-8 mb-12">
+        <div className="md:w-1/3 space-y-4">
           <Link href="/" className="flex items-center gap-3 group">
             <img src="/logo.png" alt="Diagnex Logo" className="w-8 h-8 object-contain transition-transform group-hover:scale-105" />
             <span className="text-xl font-black tracking-widest text-slate-800 uppercase">Diagnex</span>
           </Link>
-          <p className="text-sm text-slate-500 leading-relaxed">
+          <p className="text-sm text-slate-500 leading-relaxed max-w-xs">
             Clearer breast-health information. Safer next steps. Diagnex helps you document changes and organize records.
           </p>
         </div>
