@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { 
   Activity, ArrowRight, FileLock2, MapPin, ScanLine, 
   ShieldCheck, ChevronRight, Ribbon, ClipboardList,
-  HeartPulse, Users, Star, BadgeCheck, Brain
+  HeartPulse, BadgeCheck, Brain
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Footer from '@/components/Footer';
@@ -11,10 +11,9 @@ import Header from '@/components/Header';
 
 const stats = [
   { value: '94%', label: 'Early detection survival rate', icon: HeartPulse },
-  { value: '50K+', label: 'Women supported globally', icon: Users },
-  { value: '4.9★', label: 'Average user rating', icon: Star },
   { value: 'HIPAA', label: 'Compliant & secure', icon: BadgeCheck },
 ];
+
 
 const steps = [
   {
