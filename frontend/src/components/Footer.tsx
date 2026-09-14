@@ -1,7 +1,20 @@
+'use client';
+
 import Link from 'next/link';
 import { Activity } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+
+const homeNavLinks = [
+  { label: 'Home', href: '/' },
+  { label: 'Features', href: '/#features' },
+  { label: 'Secure Portal', href: '/dashboard' },
+  { label: 'Find Specialist', href: '/dashboard/specialists' },
+];
 
 export default function Footer() {
+  const pathname = usePathname();
+  const isHome = pathname === '/';
+
   return (
     <footer className="border-t border-slate-200 mt-auto bg-white py-16 px-6 relative z-10 shadow-inner w-full">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between gap-12 md:gap-8 mb-12">
@@ -30,7 +43,7 @@ export default function Footer() {
           <ul className="space-y-3 text-sm text-slate-500">
             <li><Link href="/#how" className="hover:text-primary-600 transition-colors">How it Works</Link></li>
             <li><Link href="/dashboard/research" className="hover:text-primary-600 transition-colors">ML Research Data</Link></li>
-            <li><a href="#" className="hover:text-primary-600 transition-colors">Privacy & Security</a></li>
+            <li><a href="#" className="hover:text-primary-600 transition-colors">Privacy &amp; Security</a></li>
             <li><a href="#" className="hover:text-primary-600 transition-colors">HIPAA Compliance</a></li>
           </ul>
         </div>
@@ -46,6 +59,27 @@ export default function Footer() {
         </div>
       </div>
       
+      {/* Pill Nav — only on home page */}
+      {isHome && (
+        <div className="max-w-7xl mx-auto flex justify-center mb-8">
+          <nav className="bg-slate-100 rounded-full p-1 flex items-center gap-1 shadow-inner border border-slate-200">
+            {homeNavLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`px-5 py-2 rounded-full text-sm font-semibold transition-all duration-200 whitespace-nowrap
+                  ${link.label === 'Home'
+                    ? 'bg-white text-[#1E88E5] shadow-sm'
+                    : 'text-slate-500 hover:text-slate-800 hover:bg-white/60'
+                  }`}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+        </div>
+      )}
+
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 pt-8 border-t border-slate-100 text-sm text-slate-500">
         <div className="flex items-center gap-2">
           <Activity size={16} className="text-primary-500" /> © 2026 Diagnex. All rights reserved.
