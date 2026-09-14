@@ -5,12 +5,22 @@ import api from "@/lib/api";
 import { User, Activity, AlertCircle } from "lucide-react";
 import { useAuthStore } from "@/lib/auth";
 
+interface PatientProfile {
+  first_name: string;
+  last_name: string;
+  email: string;
+  date_of_birth?: string;
+  sex?: string;
+  emergency_contact_name?: string;
+  emergency_contact_phone?: string;
+}
+
 export default function ProfilePage() {
   const user = useAuthStore(s => s.user);
   const setAuth = useAuthStore(s => s.setAuth);
   const accessToken = useAuthStore(s => s.accessToken);
   const refreshToken = useAuthStore(s => s.refreshToken);
-  const [profile, setProfile] = useState<any>(null);
+  const [profile, setProfile] = useState<PatientProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
