@@ -70,23 +70,15 @@ export default function Home() {
           className="max-w-4xl text-center space-y-8 mb-32"
         >
           {/* HUGE LOGO HIGHLIGHT */}
-          <div className="flex flex-col items-center justify-center mb-10 mt-4">
+          <div className="flex flex-col items-center justify-center mb-8 mt-4">
             <motion.img 
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
               src="/logo.png" 
-              alt="Diagnex Logo Big" 
-              className="w-32 h-32 md:w-44 md:h-44 object-contain drop-shadow-2xl mb-6" 
+              alt="Diagnex Logo" 
+              className="w-48 h-48 md:w-72 md:h-72 object-contain drop-shadow-2xl" 
             />
-            <h1 className="text-6xl md:text-8xl font-black tracking-[0.2em] text-transparent bg-clip-text bg-gradient-to-r from-blue-900 via-primary-600 to-blue-900 uppercase">
-              DIAGNEX
-            </h1>
-          </div>
-          
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary-500/20 bg-primary-500/5 backdrop-blur-md text-sm text-primary-600 mx-auto">
-            <Sparkles size={16} className="text-accent-500" /> 
-            Intelligent Diagnostics
           </div>
           
           <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-slate-900 leading-tight mt-6">
