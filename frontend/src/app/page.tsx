@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { 
   Activity, ArrowRight, FileLock2, MapPin, ScanLine, 
   ShieldCheck, ChevronRight, Ribbon, ClipboardList,
-  HeartPulse, BadgeCheck, Brain
+  HeartPulse, BadgeCheck, Brain, Star
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Footer from '@/components/Footer';
