@@ -1,6 +1,6 @@
 "use client";
 import Link from 'next/link';
-import { Activity, ArrowRight, FileLock2, MapPin, ScanLine, ShieldCheck, Sparkles, ChevronRight } from 'lucide-react';
+import { Activity, ArrowRight, FileLock2, MapPin, ScanLine, ShieldCheck, Sparkles, ChevronRight, Ribbon } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const features = [
@@ -34,8 +34,9 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col relative overflow-x-hidden bg-slate-50">
       {/* Dynamic Background Blurs */}
+      <div className="absolute inset-0 bg-[url('/bg-xray.jpg')] bg-cover bg-center bg-fixed opacity-[0.03] mix-blend-multiply pointer-events-none z-0" />
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-600/20 rounded-full blur-[120px] pointer-events-none -z-10" />
-      <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-cyan-600/10 rounded-full blur-[100px] pointer-events-none -z-10" />
+      <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-pink-500/10 rounded-full blur-[100px] pointer-events-none -z-10" />
 
       <header className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/95 backdrop-blur-md px-6 py-4 flex justify-between items-center shadow-sm">
         <Link href="/" className="flex items-center gap-3 group">
@@ -81,8 +82,17 @@ export default function Home() {
             initial={{ scale: 0.8, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             transition={{ delay: 0.1, type: "spring", stiffness: 200, damping: 20 }}
-            className="flex flex-col items-center justify-center mb-8 mt-4"
+            className="flex flex-col items-center justify-center mb-8 mt-4 relative"
           >
+            <motion.div
+              initial={{ rotate: -15, scale: 0 }}
+              animate={{ rotate: 12, scale: 1 }}
+              transition={{ delay: 0.8, type: "spring", stiffness: 300 }}
+              className="absolute -top-4 -right-4 z-20 bg-pink-500 text-white p-2 rounded-full shadow-lg shadow-pink-500/30 flex items-center justify-center hover:scale-110 hover:rotate-6 transition-all cursor-default"
+              title="Dedicated to Breast Cancer Awareness"
+            >
+              <Ribbon size={24} />
+            </motion.div>
             <motion.img 
               animate={{ y: [0, -12, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
