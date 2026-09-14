@@ -15,7 +15,12 @@ export default function ProfilePage() {
     const fetchProfile = async () => {
       try {
         const res = await api.get("/profiles/me/patient");
-        setProfile(res.data);
+        setProfile({
+          ...res.data,
+          first_name: res.data.first_name || user?.first_name || "",
+          last_name: res.data.last_name || user?.last_name || "",
+          email: res.data.email || user?.email || ""
+        });
       } catch (err) {
         console.error("Failed to fetch profile", err);
         // Fallback to auth store for demo presentation

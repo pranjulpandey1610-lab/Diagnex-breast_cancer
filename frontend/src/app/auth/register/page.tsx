@@ -52,11 +52,11 @@ export default function RegisterPage() {
       }
 
       if (data.session) {
-        setAuth({ id: 1, email: formData.email, is_active: true, email_verified: true, roles: [{ id: 1, name: "patient" }] }, data.session.access_token, data.session.refresh_token);
+        setAuth({ id: 1, email: formData.email, first_name: formData.firstName, last_name: formData.lastName, is_active: true, email_verified: true, roles: [{ id: 1, name: "patient" }] }, data.session.access_token, data.session.refresh_token);
       } else {
         // Fallback for hackathon demo: If Supabase requires email confirmation, just let them in instantly
         document.cookie = "demo_mode=true; path=/";
-        setAuth({ id: 1, email: formData.email, is_active: true, email_verified: true, roles: [{ id: 1, name: "patient" }] }, "demo-access-token", "demo-refresh-token");
+        setAuth({ id: 1, email: formData.email, first_name: formData.firstName, last_name: formData.lastName, is_active: true, email_verified: true, roles: [{ id: 1, name: "patient" }] }, "demo-access-token", "demo-refresh-token");
       }
       
       router.push("/dashboard");
