@@ -21,10 +21,20 @@ type Specialist = {
   specialty: string;
   clinic_name: string;
   verification_status: string;
-  distance?: string; // Add mock distance since backend doesn't provide coords yet
-  rating?: number; // Add mock rating
+  distance?: string;
+  rating?: number | string;
   image?: string;
 };
+
+const DUMMY_DOCTORS: Specialist[] = [
+  { id: 'd1', full_name: 'Dr. Sarah Chen', specialty: 'Breast Surgical Oncologist', clinic_name: 'City Health Medical Center', verification_status: 'verified', distance: '2.4 mi', rating: '4.9', image: 'SC' },
+  { id: 'd2', full_name: 'Dr. Michael Roberts', specialty: 'Diagnostic Radiologist', clinic_name: 'Northside Imaging Clinic', verification_status: 'verified', distance: '3.1 mi', rating: '4.8', image: 'MR' },
+  { id: 'd3', full_name: 'Dr. Priya Sharma', specialty: 'Medical Oncologist', clinic_name: 'Comprehensive Cancer Care', verification_status: 'verified', distance: '4.7 mi', rating: '4.9', image: 'PS' },
+  { id: 'd4', full_name: 'Dr. Emily Watson', specialty: 'Breast Pathologist', clinic_name: 'Advanced Diagnostics Institute', verification_status: 'verified', distance: '5.0 mi', rating: '4.7', image: 'EW' },
+  { id: 'd5', full_name: 'Dr. Rahul Mehta', specialty: 'Genetic Counselor', clinic_name: 'Hereditary Cancer Clinic', verification_status: 'verified', distance: '6.2 mi', rating: '4.8', image: 'RM' },
+  { id: 'd6', full_name: 'Dr. Anita Kapoor', specialty: 'Breast Reconstructive Surgeon', clinic_name: "Women's Health & Wellness Center", verification_status: 'verified', distance: '7.5 mi', rating: '4.9', image: 'AK' },
+];
+
 
 export default function SpecialistsPage() {
   const [bookingId, setBookingId] = useState<string | null>(null);
@@ -48,14 +58,24 @@ export default function SpecialistsPage() {
       try {
         const query = search ? `?specialty=${encodeURIComponent(search)}` : '';
         const { data } = await api.get(`/specialists${query}`);
-        setSpecialists(data.map((s: any) => ({
+        const mapped = data.map((s: any) => ({
           ...s,
           distance: (Math.random() * 10 + 1).toFixed(1) + ' mi',
           rating: (Math.random() * 1 + 4).toFixed(1),
           image: s.full_name.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase()
-        })));
+        }));
+        // Use dummy doctors for presentation if backend returns empty
+        const filtered = mapped.length > 0 ? mapped : DUMMY_DOCTORS.filter(d =>
+          !search || d.full_name.toLowerCase().includes(search.toLowerCase()) || d.specialty.toLowerCase().includes(search.toLowerCase())
+        );
+        setSpecialists(filtered);
       } catch (err) {
         console.error(err);
+        // Fallback to dummy doctors (filtered by search if applicable)
+        const filtered = DUMMY_DOCTORS.filter(d =>
+          !search || d.full_name.toLowerCase().includes(search.toLowerCase()) || d.specialty.toLowerCase().includes(search.toLowerCase())
+        );
+        setSpecialists(filtered);
       } finally {
         setIsLoading(false);
       }
