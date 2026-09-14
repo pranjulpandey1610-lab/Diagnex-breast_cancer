@@ -1,7 +1,7 @@
 "use client";
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { 
   Activity, 
   LayoutDashboard, 
@@ -15,7 +15,8 @@ import {
   ShieldCheck,
   ChevronRight,
   Database,
-  Lock
+  Lock,
+  ArrowLeft
 } from 'lucide-react';
 import { useAuthStore } from '@/lib/auth';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -67,6 +68,7 @@ const navGroups = [
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const path = usePathname();
+  const router = useRouter();
   const logout = useAuthStore(s => s.logout);
   const [isSidebarOpen, setSidebarOpen] = useState(true);
 
@@ -143,16 +145,29 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             >
               <Menu size={20} />
             </button>
-            <div>
-              <p className="text-xs font-bold text-[var(--color-primary-500)] tracking-widest uppercase mb-1">Diagnex Portal</p>
-              <h2 className="text-xl font-bold text-slate-900 capitalize">
+            
+            {path !== '/dashboard' && (
+              <button 
+                onClick={() => router.back()}
+                className="p-2 rounded-full hover:bg-slate-100 bg-white border border-slate-200 text-slate-600 transition-colors flex items-center justify-center shadow-sm"
+                title="Go Back"
+              >
+                <ArrowLeft size={18} />
+              </button>
+            )}
+
+            <div className="ml-2 hidden sm:block">
+              <p className="text-xs font-bold text-[var(--color-primary-500)] tracking-widest uppercase mb-1 flex items-center gap-2">
+                Diagnex Portal
+              </p>
+              <h2 className="text-xl font-bold text-slate-900 capitalize flex items-center gap-2">
                 {path.split('/').pop()?.replace('-', ' ') || 'Overview'}
               </h2>
             </div>
           </div>
           
           {/* Centered Pill Nav */}
-          <nav className="hidden xl:flex items-center gap-2 absolute left-1/2 -translate-x-1/2 bg-slate-100/50 backdrop-blur-md px-2 py-1.5 rounded-full border border-slate-200/50 shadow-sm z-50">
+          <nav className="hidden lg:flex items-center gap-2 absolute left-1/2 -translate-x-1/2 bg-slate-100/50 backdrop-blur-md px-2 py-1.5 rounded-full border border-slate-200/50 shadow-sm z-50">
             <Link href="/" className="px-4 py-1.5 rounded-full text-sm font-semibold text-slate-700 hover:text-primary-600 hover:bg-white hover:shadow-sm transition-all duration-300">
               Home
             </Link>
@@ -168,7 +183,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           </nav>
 
           <div className="flex items-center gap-4">
-            <div className="flex items-center gap-3 bg-white px-4 py-2 rounded-full border border-slate-200 shadow-sm">
+            <div className="hidden xl:flex items-center gap-3 bg-white px-4 py-2 rounded-full border border-slate-200 shadow-sm">
               <ShieldCheck size={16} className="text-emerald-500" />
               <span className="text-xs font-medium text-slate-600">HIPAA Compliant</span>
             </div>
