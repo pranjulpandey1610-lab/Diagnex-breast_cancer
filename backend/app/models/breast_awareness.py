@@ -58,6 +58,16 @@ class BreastLocationEntry(Base):
     
     session = relationship("BreastAwarenessSession", back_populates="location_entries")
 
+class BreastAnswer(Base):
+    """An auditable user-selected or free-text answer; never a training record."""
+    __tablename__ = "breast_answers"
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
+    session_id = Column(UUID(as_uuid=True), ForeignKey("breast_awareness_sessions.id", ondelete="CASCADE"), nullable=False)
+    question_key = Column(String, nullable=False)
+    value = Column(String, nullable=False)
+    source = Column(String, nullable=False, default="manual")
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
 class BreastTriageResult(Base):
     __tablename__ = "breast_triage_results"
     

@@ -29,6 +29,30 @@ services:
       timeout: 5s
       retries: 5
 
+  orthanc:
+    image: jodogne/orthanc-plugins:1.12.4
+    container_name: diagnex-orthanc
+    environment:
+      ORTHANC__AUTHENTICATION_ENABLED: "true"
+      ORTHANC__REGISTERED_USERS: '{"orthanc":"${ORTHANC_PASSWORD:-change-me}"}'
+      ORTHANC__DICOM_WEB__ENABLE: "true"
+      ORTHANC__DICOM_WEB__ROOT: /dicom-web/
+      ORTHANC__REMOTE_ACCESS_ALLOWED: "false"
+    volumes:
+      - orthanc_data:/var/lib/orthanc/db
+    ports:
+      - "127.0.0.1:8042:8042"
+
+  ohif:
+    image: ohif/viewer:v3.8.3
+    container_name: diagnex-ohif
+    environment:
+      APP_CONFIG: '{"servers":{"dicomWeb":[{"name":"Diagnex Orthanc","wadoUriRoot":"http://orthanc:8042/dicom-web","qidoRoot":"http://orthanc:8042/dicom-web","wadoRoot":"http://orthanc:8042/dicom-web"}]}}'
+    ports:
+      - "127.0.0.1:3001:80"
+    depends_on:
+      - orthanc
+
   backend:
     build:
       context: ./backend
@@ -87,3 +111,4 @@ services:
 
 volumes:
   postgres_data:
+  orthanc_data:

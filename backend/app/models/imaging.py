@@ -12,6 +12,13 @@ class ArchiveStatus(str, enum.Enum):
     ARCHIVED = "archived"
     FAILED = "failed"
 
+class ImagingWorkflowStatus(str, enum.Enum):
+    RECEIVED = "Received"
+    DICOM_VERIFIED = "DICOM verified"
+    STORED = "Stored securely"
+    AWAITING_REPORT = "Awaiting radiology report"
+    REPORT_ATTACHED = "Radiology report attached"
+
 class ImagingStudy(Base):
     __tablename__ = "imaging_studies"
     
@@ -22,6 +29,7 @@ class ImagingStudy(Base):
     study_date = Column(DateTime(timezone=True))
     orthanc_study_id = Column(String, unique=True, index=True) # ID in external PACS
     archive_status = Column(Enum(ArchiveStatus), default=ArchiveStatus.PENDING)
+    workflow_status = Column(String, default=ImagingWorkflowStatus.RECEIVED.value, nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     
     patient = relationship("PatientProfile")
