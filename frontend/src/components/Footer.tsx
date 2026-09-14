@@ -59,9 +59,6 @@ export default function Footer() {
           <a href="#" className="hover:text-slate-900 transition-colors">Privacy</a>
           <a href="#" className="hover:text-slate-900 transition-colors">Cookies</a>
         </div>
-        <div className="px-3 py-1 bg-amber-50 text-amber-600 rounded-full border border-amber-200 text-xs font-bold uppercase tracking-widest">
-          Prototype Demo Mode
-        </div>
       </div>
     </footer>
   );
