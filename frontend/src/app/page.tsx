@@ -176,7 +176,9 @@ export default function Home() {
         </section>
 
         {/* ── STATS BAR ── */}
-        <section className="w-full bg-white border-y border-slate-100 shadow-sm py-10 px-6">
+        <section className="w-full bg-white border-y border-slate-100 shadow-sm py-10 px-6 relative overflow-hidden">
+          <img src="/lady-sticker.jpg" alt="" className="absolute -left-10 top-1/2 -translate-y-1/2 w-48 h-auto pointer-events-none select-none mix-blend-multiply opacity-[0.05]" />
+          <img src="/lady-sticker.jpg" alt="" className="absolute -right-10 top-1/2 -translate-y-1/2 w-48 h-auto pointer-events-none select-none mix-blend-multiply opacity-[0.05] scale-x-[-1]" />
           <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, i) => (
               <motion.div
@@ -198,7 +200,8 @@ export default function Home() {
         </section>
 
         {/* ── HOW IT WORKS ── */}
-        <section id="how" className="w-full max-w-6xl mx-auto px-6 py-24">
+        <section id="how" className="w-full max-w-6xl mx-auto px-6 py-24 relative">
+          <img src="/lady-sticker.jpg" alt="" className="absolute right-0 top-10 w-52 h-auto pointer-events-none select-none mix-blend-multiply opacity-[0.06]" />
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -234,7 +237,8 @@ export default function Home() {
         </section>
 
         {/* ── FEATURES ── */}
-        <section className="w-full bg-white border-t border-slate-100 py-24 px-6">
+        <section className="w-full bg-white border-t border-slate-100 py-24 px-6 relative overflow-hidden">
+          <img src="/lady-sticker.jpg" alt="" className="absolute left-4 bottom-8 w-44 h-auto pointer-events-none select-none mix-blend-multiply opacity-[0.06] -rotate-6" />
           <div className="max-w-6xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -271,7 +275,9 @@ export default function Home() {
         </section>
 
         {/* ── TESTIMONIALS ── */}
-        <section className="w-full max-w-6xl mx-auto px-6 py-24">
+        <section className="w-full max-w-6xl mx-auto px-6 py-24 relative">
+          <img src="/lady-sticker.jpg" alt="" className="absolute left-0 top-0 w-40 h-auto pointer-events-none select-none mix-blend-multiply opacity-[0.07] rotate-12" />
+          <img src="/lady-sticker.jpg" alt="" className="absolute right-0 bottom-0 w-40 h-auto pointer-events-none select-none mix-blend-multiply opacity-[0.07] -rotate-6 scale-x-[-1]" />
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -319,6 +325,8 @@ export default function Home() {
           >
             <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl" />
             <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full blur-3xl" />
+            <img src="/lady-sticker.jpg" alt="" className="absolute right-8 bottom-0 w-48 h-auto pointer-events-none select-none mix-blend-soft-light opacity-[0.12]" />
+            <img src="/lady-sticker.jpg" alt="" className="absolute left-0 top-0 w-36 h-auto pointer-events-none select-none mix-blend-soft-light opacity-[0.10] scale-x-[-1] rotate-12" />
             <div className="relative z-10 space-y-5">
               <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-full px-4 py-1.5 text-sm font-semibold border border-white/20">
                 <Ribbon size={14} /> Join the movement for early detection
