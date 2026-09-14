@@ -137,11 +137,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
       {/* Main Content Area */}
       <main className="flex-1 flex flex-col min-w-0 relative">
-        <header className="sticky top-0 z-10 h-20 px-8 flex items-center justify-between bg-white/80 backdrop-blur-lg border-b border-[var(--color-surface-border)] shadow-sm">
-          <div className="flex items-center gap-4">
+        <header className="sticky top-0 z-10 h-20 px-4 sm:px-8 flex items-center justify-between bg-white/80 backdrop-blur-lg border-b border-[var(--color-surface-border)] shadow-sm">
+          <div className="flex items-center gap-4 flex-1">
             <button 
               onClick={() => setSidebarOpen(!isSidebarOpen)}
-              className="p-2 rounded-lg hover:bg-slate-100 text-slate-500 hidden md:block"
+              className="p-2 rounded-lg hover:bg-slate-100 text-slate-500 hidden md:block flex-shrink-0"
             >
               <Menu size={20} />
             </button>
@@ -149,25 +149,26 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             {path !== '/dashboard' && (
               <button 
                 onClick={() => router.back()}
-                className="p-2 rounded-full hover:bg-slate-100 bg-white border border-slate-200 text-slate-600 transition-colors flex items-center justify-center shadow-sm"
+                className="p-2 rounded-full hover:bg-slate-100 bg-white border border-slate-200 text-slate-600 transition-colors flex items-center justify-center shadow-sm flex-shrink-0"
                 title="Go Back"
               >
                 <ArrowLeft size={18} />
               </button>
             )}
 
-            <div className="ml-2 hidden sm:block">
-              <p className="text-xs font-bold text-[var(--color-primary-500)] tracking-widest uppercase mb-1 flex items-center gap-2">
+            <div className="ml-2 hidden sm:block min-w-0">
+              <p className="text-xs font-bold text-[var(--color-primary-500)] tracking-widest uppercase mb-1 flex items-center gap-2 truncate">
                 Diagnex Portal
               </p>
-              <h2 className="text-xl font-bold text-slate-900 capitalize flex items-center gap-2">
+              <h2 className="text-xl font-bold text-slate-900 capitalize flex items-center gap-2 truncate">
                 {path.split('/').pop()?.replace('-', ' ') || 'Overview'}
               </h2>
             </div>
           </div>
           
           {/* Centered Pill Nav */}
-          <nav className="hidden lg:flex items-center gap-2 absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 bg-slate-100/50 backdrop-blur-md px-2 py-1.5 rounded-full border border-slate-200/50 shadow-sm z-50">
+          <div className="hidden xl:flex flex-1 justify-center">
+            <nav className="flex items-center gap-2 bg-slate-100/50 backdrop-blur-md px-2 py-1.5 rounded-full border border-slate-200/50 shadow-sm">
             <Link href="/" className="px-4 py-1.5 rounded-full text-sm font-semibold text-slate-700 hover:text-primary-600 hover:bg-white hover:shadow-sm transition-all duration-300">
               Home
             </Link>
@@ -180,9 +181,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <Link href="/dashboard/specialists" className="px-4 py-1.5 rounded-full text-sm font-semibold text-slate-700 hover:text-primary-600 hover:bg-white hover:shadow-sm transition-all duration-300">
               Find Specialist
             </Link>
-          </nav>
+            </nav>
+          </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 flex-1 justify-end">
             <div className="hidden xl:flex items-center gap-3 bg-white px-4 py-2 rounded-full border border-slate-200 shadow-sm">
               <ShieldCheck size={16} className="text-emerald-500" />
               <span className="text-xs font-medium text-slate-600">HIPAA Compliant</span>
