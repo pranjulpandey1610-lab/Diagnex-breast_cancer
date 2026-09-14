@@ -7,6 +7,8 @@ interface User {
   is_active: boolean;
   email_verified: boolean;
   roles: { id: number; name: string }[];
+  first_name?: string;
+  last_name?: string;
 }
 
 interface AuthState {

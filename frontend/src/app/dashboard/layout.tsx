@@ -66,7 +66,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const path = usePathname();
   const router = useRouter();
   const logout = useAuthStore(s => s.logout);
+  const user = useAuthStore(s => s.user);
   const [isSidebarOpen, setSidebarOpen] = useState(true);
+
+  const initials = user?.first_name ? user.first_name[0].toUpperCase() : (user?.email ? user.email[0].toUpperCase() : 'U');
+  const displayName = user?.first_name ? `${user.first_name} ${user.last_name || ''}` : user?.email || 'Guest User';
 
   return (
     <div className="flex min-h-screen bg-[var(--color-background)]">
@@ -183,8 +187,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               <ShieldCheck size={16} className="text-emerald-500" />
               <span className="text-xs font-medium text-slate-600">HIPAA Compliant</span>
             </div>
-            <div className="w-10 h-10 rounded-full bg-gradient-to-r from-[var(--color-primary-500)] to-[var(--color-accent-500)] flex items-center justify-center font-bold text-white shadow-md">
-              A
+            <div className="flex items-center gap-3">
+              <div className="hidden sm:flex flex-col items-end">
+                <span className="text-sm font-semibold text-slate-800 leading-tight">{displayName}</span>
+                <span className="text-xs text-slate-500 font-medium capitalize">{user?.roles?.[0]?.name || 'Patient'}</span>
+              </div>
+              <div className="w-10 h-10 rounded-full bg-gradient-to-r from-[var(--color-primary-500)] to-[var(--color-accent-500)] flex items-center justify-center font-bold text-white shadow-md">
+                {initials}
+              </div>
             </div>
           </div>
         </header>
