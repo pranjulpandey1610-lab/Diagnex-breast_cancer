@@ -9,7 +9,7 @@ export default function Header() {
         <span className="text-2xl font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-blue-900 to-primary-500 uppercase">Diagnex</span>
       </Link>
       
-      <nav className="hidden md:flex items-center gap-2 absolute left-1/2 -translate-x-1/2 bg-slate-100/50 backdrop-blur-md px-2 py-1.5 rounded-full border border-slate-200/50 shadow-sm z-50">
+      <nav className="hidden md:flex items-center gap-2 absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 bg-slate-100/50 backdrop-blur-md px-2 py-1.5 rounded-full border border-slate-200/50 shadow-sm z-50">
         <Link href="/" className="px-4 py-1.5 rounded-full text-sm font-semibold text-slate-700 hover:text-primary-600 hover:bg-white hover:shadow-sm transition-all duration-300">
           Home
         </Link>
