@@ -1,6 +1,12 @@
 # HACKATHON PRODUCT DOCUMENTATION
 *A complete product, engineering & delivery record for Diagnex*
 
+<div align="center">
+  <img src="docs/images/Mammogram%20cover.png.png" width="32%" alt="Mammogram Cover" />
+  <img src="docs/images/MRI%20cover.png.png" width="32%" alt="MRI Cover" />
+  <img src="docs/images/Ultrasound%20cover.png.png" width="32%" alt="Ultrasound Cover" />
+</div>
+
 ## 01 / PROJECT IDENTITY
 - **Product / Project Name**: Diagnex (Breast Cancer Health Platform)
 - **Team Name**: DIAGNEX
