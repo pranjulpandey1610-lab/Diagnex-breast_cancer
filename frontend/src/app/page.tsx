@@ -68,6 +68,7 @@ export default function Home() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           className="max-w-4xl text-center space-y-8 mb-32"
+        >
           {/* HUGE LOGO HIGHLIGHT */}
           <div className="flex flex-col items-center justify-center mb-10 mt-4">
             <motion.img 
