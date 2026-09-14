@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
   UploadCloud, 
@@ -8,19 +8,46 @@ import {
   Search,
   Filter,
   CheckCircle2,
-  Image as ImageIcon
+  Image as ImageIcon,
+  LoaderCircle,
+  AlertCircle
 } from 'lucide-react';
+import api from '@/lib/api';
 
-const mockScans = [
-  { id: 1, date: '2026-08-12', type: 'Mammogram', status: 'Analyzed', doctor: 'Dr. Sarah Chen' },
-  { id: 2, date: '2026-03-05', type: 'MRI', status: 'Analyzed', doctor: 'Dr. Michael Roberts' },
-  { id: 3, date: '2025-10-22', type: 'Ultrasound', status: 'Archived', doctor: 'Dr. Sarah Chen' }
-];
+type Scan = {
+  id: string;
+  created_at: string;
+  modality: string;
+  status: string;
+  doctor?: string;
+};
+
+const modalityName: Record<string, string> = { MG: "Mammogram", US: "Breast Ultrasound", MR: "Breast MRI" };
 
 export default function ImagingPage() {
   const [isDragging, setIsDragging] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
+  const [scans, setScans] = useState<Scan[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchScans = async () => {
+      try {
+        const { data } = await api.get('/imaging/studies');
+        setScans(data.map((s: any) => ({
+          ...s,
+          doctor: 'Clinical Review Pending'
+        })));
+      } catch (err: any) {
+        setError(err.response?.data?.detail || 'Failed to load imaging studies');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchScans();
+  }, []);
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -143,48 +170,63 @@ export default function ImagingPage() {
           <h2 className="text-xl font-bold text-slate-900 mb-6">Recent Scans</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {mockScans.map((scan, i) => (
-              <motion.div 
-                key={scan.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1 }}
-                className="group relative rounded-2xl overflow-hidden border border-slate-200 bg-white/80 hover:border-[var(--color-primary-500)]/50 transition-colors"
-              >
-                {/* Mock Image Area */}
-                <div className="h-40 bg-gradient-to-br from-gray-900 to-black relative flex items-center justify-center overflow-hidden">
-                  <ImageIcon size={48} className="text-gray-800" />
+            {isLoading ? (
+              <div className="col-span-full p-8 text-center text-slate-500">
+                <LoaderCircle className="animate-spin mx-auto mb-2" />
+                Loading your scans...
+              </div>
+            ) : error ? (
+              <div className="col-span-full p-8 text-center text-rose-500 flex flex-col items-center">
+                <AlertCircle className="mb-2" />
+                {error}
+              </div>
+            ) : scans.length === 0 ? (
+              <div className="col-span-full p-8 text-center text-slate-500">
+                No imaging records found.
+              </div>
+            ) : (
+              scans.map((scan, i) => (
+                <motion.div 
+                  key={scan.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.1 }}
+                  className="group relative rounded-2xl overflow-hidden border border-slate-200 bg-white/80 hover:border-[var(--color-primary-500)]/50 transition-colors"
+                >
+                  {/* Mock Image Area */}
+                  <div className="h-40 bg-gradient-to-br from-gray-900 to-black relative flex items-center justify-center overflow-hidden">
+                    <ImageIcon size={48} className="text-gray-800" />
+                    
+                    {/* Overlay on hover */}
+                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3 backdrop-blur-sm">
+                      <button className="btn-primary py-2 px-4 text-sm">View DICOM</button>
+                    </div>
+                  </div>
                   
-                  {/* Overlay on hover */}
-                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3 backdrop-blur-sm">
-                    <button className="btn-primary py-2 px-4 text-sm">View</button>
-                    <button className="btn-secondary py-2 px-4 text-sm">Share</button>
+                  {/* Details */}
+                  <div className="p-5 border-t border-slate-200">
+                    <div className="flex justify-between items-start mb-2">
+                      <h3 className="font-bold text-slate-900 text-lg">{modalityName[scan.modality] || scan.modality}</h3>
+                      <span className={`text-xs px-2 py-1 rounded-full border ${
+                        scan.status.toLowerCase().includes('analyzed') || scan.status.toLowerCase().includes('completed')
+                          ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
+                          : 'bg-gray-500/10 text-slate-500 border-gray-500/20'
+                      }`}>
+                        {scan.status}
+                      </span>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-sm text-slate-500 flex items-center gap-2">
+                        <FileImage size={14} /> {new Date(scan.created_at).toLocaleDateString()}
+                      </p>
+                      <p className="text-sm text-slate-500 flex items-center gap-2">
+                        <ShieldAlert size={14} /> {scan.doctor}
+                      </p>
+                    </div>
                   </div>
-                </div>
-                
-                {/* Details */}
-                <div className="p-5 border-t border-slate-200">
-                  <div className="flex justify-between items-start mb-2">
-                    <h3 className="font-bold text-slate-900 text-lg">{scan.type}</h3>
-                    <span className={`text-xs px-2 py-1 rounded-full border ${
-                      scan.status === 'Analyzed' 
-                        ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
-                        : 'bg-gray-500/10 text-slate-500 border-gray-500/20'
-                    }`}>
-                      {scan.status}
-                    </span>
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-sm text-slate-500 flex items-center gap-2">
-                      <FileImage size={14} /> {scan.date}
-                    </p>
-                    <p className="text-sm text-slate-500 flex items-center gap-2">
-                      <ShieldAlert size={14} /> {scan.doctor}
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              ))
+            )}
           </div>
         </div>
 

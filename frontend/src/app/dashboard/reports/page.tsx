@@ -8,16 +8,46 @@ import {
   Calendar,
   Stethoscope,
   Search,
-  Filter
+  Filter,
+  LoaderCircle,
+  AlertCircle
 } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import api from '@/lib/api';
 
-const reports = [
-  { id: 'REP-1042', date: 'Oct 24, 2026', title: 'Annual Mammography Summary', doctor: 'Dr. Sarah Chen', type: 'Clinical Report' },
-  { id: 'REP-1041', date: 'Jun 15, 2026', title: 'Breast MRI Analysis', doctor: 'Dr. Michael Roberts', type: 'Radiology Report' },
-  { id: 'REP-1038', date: 'Jan 10, 2026', title: 'Symptom Triage Assessment', doctor: 'Diagnex AI', type: 'System Generated' }
-];
+type Report = {
+  id: string;
+  title: string;
+  date: string;
+  status: string;
+  doctor?: string;
+  type?: string;
+};
 
 export default function ReportsPage() {
+  const [reports, setReports] = useState<Report[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchReports = async () => {
+      try {
+        const { data } = await api.get('/reports');
+        // Backend returns: [{"id":"uuid","title":"...","date":"...","status":"Saved report"}]
+        setReports(data.map((r: any) => ({
+          ...r,
+          doctor: 'Diagnex Clinic', // Fallback since backend doesn't return doctor
+          type: 'Clinical Report'
+        })));
+      } catch (err: any) {
+        setError(err.response?.data?.detail || 'Failed to load reports');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchReports();
+  }, []);
+
   return (
     <div className="max-w-6xl mx-auto space-y-8 pb-12">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
@@ -52,54 +82,80 @@ export default function ReportsPage() {
               </tr>
             </thead>
             <tbody>
-              {reports.map((report, i) => (
-                <motion.tr 
-                  key={report.id}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.1 }}
-                  className="border-b border-slate-200 hover:bg-white transition-colors group"
-                >
-                  <td className="p-4">
-                    <div className="flex items-center gap-4">
-                      <div className="p-3 rounded-xl bg-gradient-to-br from-blue-500/20 to-sky-500/20 text-blue-400">
-                        <FileText size={20} />
-                      </div>
-                      <div>
-                        <h3 className="text-slate-900 font-bold">{report.title}</h3>
-                        <div className="flex items-center gap-2 mt-1">
-                          <span className="text-xs text-[var(--color-primary-400)]">{report.id}</span>
-                          <span className="text-xs text-gray-500 px-2 py-0.5 rounded-full border border-gray-600/50">
-                            {report.type}
-                          </span>
+              {isLoading ? (
+                <tr>
+                  <td colSpan={4} className="p-8 text-center text-slate-500">
+                    <LoaderCircle className="animate-spin mx-auto mb-2" />
+                    Loading your reports...
+                  </td>
+                </tr>
+              ) : error ? (
+                <tr>
+                  <td colSpan={4} className="p-8 text-center text-rose-500 flex flex-col items-center">
+                    <AlertCircle className="mb-2" />
+                    {error}
+                  </td>
+                </tr>
+              ) : reports.length === 0 ? (
+                <tr>
+                  <td colSpan={4} className="p-8 text-center text-slate-500">
+                    No reports found.
+                  </td>
+                </tr>
+              ) : (
+                reports.map((report, i) => (
+                  <motion.tr 
+                    key={report.id}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.1 }}
+                    className="border-b border-slate-200 hover:bg-white transition-colors group"
+                  >
+                    <td className="p-4">
+                      <div className="flex items-center gap-4">
+                        <div className="p-3 rounded-xl bg-gradient-to-br from-blue-500/20 to-sky-500/20 text-blue-400">
+                          <FileText size={20} />
+                        </div>
+                        <div>
+                          <h3 className="text-slate-900 font-bold">{report.title}</h3>
+                          <div className="flex items-center gap-2 mt-1">
+                            <span className="text-xs text-[var(--color-primary-400)]">{report.id.slice(0, 8)}...</span>
+                            <span className="text-xs text-gray-500 px-2 py-0.5 rounded-full border border-gray-600/50">
+                              {report.type}
+                            </span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </td>
-                  <td className="p-4">
-                    <div className="flex items-center gap-2 text-slate-600 text-sm">
-                      <Calendar size={14} className="text-gray-500" />
-                      {report.date}
-                    </div>
-                  </td>
-                  <td className="p-4">
-                    <div className="flex items-center gap-2 text-slate-600 text-sm">
-                      <Stethoscope size={14} className="text-gray-500" />
-                      {report.doctor}
-                    </div>
-                  </td>
-                  <td className="p-4">
-                    <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <button className="p-2 rounded-lg bg-white/10 hover:bg-[var(--color-primary-600)] text-slate-600 hover:text-slate-900 transition-colors" title="View">
-                        <Eye size={18} />
-                      </button>
-                      <button className="p-2 rounded-lg bg-white/10 hover:bg-[var(--color-accent-600)] text-slate-600 hover:text-slate-900 transition-colors" title="Download PDF">
-                        <Download size={18} />
-                      </button>
-                    </div>
-                  </td>
-                </motion.tr>
-              ))}
+                    </td>
+                    <td className="p-4">
+                      <div className="flex items-center gap-2 text-slate-600 text-sm">
+                        <Calendar size={14} className="text-gray-500" />
+                        {new Date(report.date).toLocaleDateString()}
+                      </div>
+                    </td>
+                    <td className="p-4">
+                      <div className="flex items-center gap-2 text-slate-600 text-sm">
+                        <Stethoscope size={14} className="text-gray-500" />
+                        {report.doctor}
+                      </div>
+                    </td>
+                    <td className="p-4">
+                      <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button className="p-2 rounded-lg bg-white/10 hover:bg-[var(--color-primary-600)] text-slate-600 hover:text-slate-900 transition-colors" title="View">
+                          <Eye size={18} />
+                        </button>
+                        <button 
+                          className="p-2 rounded-lg bg-white/10 hover:bg-[var(--color-accent-600)] text-slate-600 hover:text-slate-900 transition-colors" 
+                          title="Download PDF"
+                          onClick={() => window.open(`http://localhost:8000/api/reports/${report.id}/download`, '_blank')}
+                        >
+                          <Download size={18} />
+                        </button>
+                      </div>
+                    </td>
+                  </motion.tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

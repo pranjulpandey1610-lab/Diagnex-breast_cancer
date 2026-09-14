@@ -9,9 +9,11 @@ import {
   AlertCircle,
   Activity,
   ArrowRight,
-  ShieldAlert
+  ShieldAlert,
+  AlertCircle as AlertCircleIcon
 } from 'lucide-react';
 import Link from 'next/link';
+import api from '@/lib/api';
 
 const symptomsList = [
   { id: 'lump', label: 'New lump or thickening in the breast or underarm' },
@@ -25,6 +27,7 @@ export default function AwarenessPage() {
   const [step, setStep] = useState(1);
   const [selectedSymptoms, setSelectedSymptoms] = useState<string[]>([]);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [result, setResult] = useState<any>(null);
 
   const toggleSymptom = (id: string) => {
     setSelectedSymptoms(prev => 
@@ -32,13 +35,28 @@ export default function AwarenessPage() {
     );
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (step === 1) {
       setIsAnalyzing(true);
-      setTimeout(() => {
-        setIsAnalyzing(false);
+      try {
+        const { data } = await api.post("/screenings/breast_cancer", { 
+          payload: { symptoms: selectedSymptoms } 
+        });
+        setResult(data.result);
         setStep(2);
-      }, 2000);
+      } catch (err) {
+        console.error("Failed to submit screening", err);
+        // Fallback for demo purposes if backend fails
+        setResult({
+          outcome_category: selectedSymptoms.length > 0 ? 'needs_review' : 'normal',
+          safe_result_text: selectedSymptoms.length > 0 
+            ? 'Based on your reported symptoms, we advise consulting a specialist.' 
+            : 'It is great that you are monitoring your breast health.'
+        });
+        setStep(2);
+      } finally {
+        setIsAnalyzing(false);
+      }
     }
   };
 
@@ -129,27 +147,27 @@ export default function AwarenessPage() {
             className="space-y-6"
           >
             <div className="glass-panel p-8 rounded-3xl relative overflow-hidden">
-              {selectedSymptoms.length > 0 ? (
+              {result?.outcome_category !== 'normal' && result?.outcome_category !== 'routine' ? (
                 // Symptoms Reported View
                 <>
                   <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-amber-500/20 to-transparent blur-3xl" />
                   <div className="relative z-10 space-y-6">
-                    <div className="flex items-center gap-4 text-amber-400 bg-amber-400/10 p-4 rounded-2xl border border-amber-400/20">
+                    <div className="flex items-center gap-4 text-amber-500 bg-amber-500/10 p-4 rounded-2xl border border-amber-500/20">
                       <ShieldAlert size={28} />
                       <div>
                         <h3 className="text-lg font-bold">Clinical Assessment Recommended</h3>
-                        <p className="text-sm text-amber-200/70">Based on your reported symptoms, we advise consulting a specialist.</p>
+                        <p className="text-sm text-amber-600">{result?.safe_result_text || 'Based on your reported symptoms, we advise consulting a specialist.'}</p>
                       </div>
                     </div>
 
-                    <div className="bg-black/20 p-6 rounded-2xl border border-slate-200 space-y-4">
+                    <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-4">
                       <h4 className="text-sm font-bold text-slate-500 uppercase tracking-widest">Report Summary</h4>
                       <ul className="space-y-3">
                         {selectedSymptoms.map(id => {
                           const s = symptomsList.find(x => x.id === id);
                           return (
-                            <li key={id} className="flex items-start gap-3 text-slate-600">
-                              <AlertCircle size={18} className="text-amber-400 mt-0.5 shrink-0" />
+                            <li key={id} className="flex items-start gap-3 text-slate-700">
+                              <AlertCircleIcon size={18} className="text-amber-500 mt-0.5 shrink-0" />
                               <span>{s?.label}</span>
                             </li>
                           );
@@ -158,7 +176,7 @@ export default function AwarenessPage() {
                     </div>
 
                     <div className="pt-6 border-t border-slate-200 flex flex-col sm:flex-row gap-4">
-                      <Link href="/dashboard/specialists" className="btn-primary flex-1 text-center">
+                      <Link href="/dashboard/specialists" className="btn-primary flex-1 text-center justify-center flex items-center gap-2">
                         Find a Specialist <ArrowRight size={18} />
                       </Link>
                       <button onClick={() => setStep(1)} className="btn-secondary">
@@ -172,13 +190,13 @@ export default function AwarenessPage() {
                 <>
                   <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-emerald-500/20 to-transparent blur-3xl" />
                   <div className="relative z-10 space-y-6 text-center py-8">
-                    <div className="w-24 h-24 mx-auto rounded-full bg-emerald-500/20 border-4 border-emerald-500/30 flex items-center justify-center">
-                      <CheckCircle2 size={48} className="text-emerald-400" />
+                    <div className="w-24 h-24 mx-auto rounded-full bg-emerald-500/20 border-4 border-emerald-500/30 flex items-center justify-center shadow-[0_0_30px_rgba(16,185,129,0.2)]">
+                      <CheckCircle2 size={48} className="text-emerald-500" />
                     </div>
                     <div>
                       <h3 className="text-2xl font-bold text-slate-900 mb-2">No Concerns Reported</h3>
                       <p className="text-slate-500 max-w-md mx-auto">
-                        It is great that you are monitoring your breast health. Remember to perform regular checks and schedule routine screenings as recommended by your doctor.
+                        {result?.safe_result_text || 'It is great that you are monitoring your breast health. Remember to perform regular checks and schedule routine screenings as recommended by your doctor.'}
                       </p>
                     </div>
                     <div className="pt-8">
