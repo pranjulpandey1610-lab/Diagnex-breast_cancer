@@ -45,11 +45,19 @@ export default function Home() {
           <span className="text-2xl font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-blue-900 to-primary-500 uppercase">Diagnex</span>
         </Link>
         
-        <nav className="hidden md:flex items-center gap-8 font-medium text-slate-600 text-sm z-50">
-          <Link href="/" className="hover:text-primary-600 transition-colors">Home</Link>
-          <a href="/#how" className="hover:text-primary-600 transition-colors">How it Works</a>
-          <Link href="/dashboard" className="hover:text-primary-600 transition-colors">Portal</Link>
-          <Link href="/dashboard/specialists" className="hover:text-primary-600 transition-colors">Directory</Link>
+        <nav className="hidden md:flex items-center gap-2 absolute left-1/2 -translate-x-1/2 bg-slate-100/50 backdrop-blur-md px-2 py-1.5 rounded-full border border-slate-200/50 shadow-sm z-50">
+          <Link href="/" className="px-4 py-1.5 rounded-full text-sm font-semibold text-slate-700 hover:text-primary-600 hover:bg-white hover:shadow-sm transition-all duration-300">
+            Home
+          </Link>
+          <a href="/#how" className="px-4 py-1.5 rounded-full text-sm font-semibold text-slate-700 hover:text-primary-600 hover:bg-white hover:shadow-sm transition-all duration-300">
+            Features
+          </a>
+          <Link href="/dashboard" className="px-4 py-1.5 rounded-full text-sm font-semibold text-slate-700 hover:text-primary-600 hover:bg-white hover:shadow-sm transition-all duration-300">
+            Secure Portal
+          </Link>
+          <Link href="/dashboard/specialists" className="px-4 py-1.5 rounded-full text-sm font-semibold text-slate-700 hover:text-primary-600 hover:bg-white hover:shadow-sm transition-all duration-300">
+            Find Specialist
+          </Link>
         </nav>
 
         <div className="flex items-center gap-4">
