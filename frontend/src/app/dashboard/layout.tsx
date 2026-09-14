@@ -1,10 +1,4 @@
 "use client";
-<<<<<<< HEAD
-import Link from 'next/link'; import {usePathname} from 'next/navigation';
-import {Activity,LayoutDashboard,ClipboardCheck,Upload,FileText,MapPin,User,LogOut,Menu,ShieldCheck,Database} from 'lucide-react'; import {useAuthStore} from '@/lib/auth';
-const links=[['/dashboard','Overview',LayoutDashboard],['/dashboard/assistant','Breast Awareness',ClipboardCheck],['/dashboard/upload','Upload reports',Upload],['/dashboard/archive','Scan archive',Database],['/dashboard/reports','Saved reports',FileText],['/dashboard/specialists','Find a specialist',MapPin],['/dashboard/research','Research datasets',Database],['/dashboard/imaging-research','Imaging research',Database],['/dashboard/profile','Profile',User]] as const;
-export default function DashboardLayout({children}:{children:React.ReactNode}){const path=usePathname();const logout=useAuthStore(s=>s.logout);return <div className="app-shell"><aside className="side"><Link href="/" className="side-brand"><span><Activity size={20}/></span><b>Diagnex</b></Link><div className="mode"><span/> Prototype Demo Mode</div><p className="side-label">YOUR SPACE</p><nav>{links.map(([href,label,Icon])=><Link key={href} href={href} className={path===href?'selected':''}><Icon size={18}/><span>{label}</span></Link>)}</nav><div className="side-bottom"><div className="privacy"><ShieldCheck size={17}/><span>Private by design<br/><small>Not a diagnosis</small></span></div><button onClick={logout}><LogOut size={17}/> Sign out</button></div></aside><main className="app-main"><header className="app-header"><div><p>BREAST HEALTH SUPPORT</p><h2>Good morning, Alex</h2></div><div className="header-right"><button className="reset-demo" onClick={()=>location.reload()}>Reset demo</button><div className="avatar">A</div></div></header>{children}</main><nav className="bottom-nav">{links.slice(0,5).map(([href,label,Icon])=><Link className={path===href?'selected':''} href={href} key={href}><Icon size={19}/><small>{label.split(' ')[0]}</small></Link>)}</nav></div>}
-=======
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -40,6 +34,13 @@ const navGroups = [
       { href: '/dashboard/awareness', label: 'Breast Awareness', icon: ClipboardCheck },
       { href: '/dashboard/imaging', label: 'Imaging & Scans', icon: Upload },
       { href: '/dashboard/reports', label: 'Saved Reports', icon: FileText },
+    ]
+  },
+  {
+    label: 'Archives & Uploads',
+    items: [
+      { href: '/dashboard/upload', label: 'Upload Reports', icon: Upload },
+      { href: '/dashboard/archive', label: 'Scan Archive', icon: Database },
     ]
   },
   {
@@ -189,4 +190,3 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     </div>
   );
 }
->>>>>>> bcc08286bf2bb7aa73724fd69d45e537e6fea233
