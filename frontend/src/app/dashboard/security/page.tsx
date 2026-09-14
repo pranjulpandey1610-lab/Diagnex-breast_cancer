@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Shield, Key, Smartphone, AlertTriangle } from "lucide-react";
 import { useAuthStore } from "@/lib/auth";
 import { createClient } from "@/utils/supabase/client";
@@ -14,6 +14,39 @@ export default function SecurityPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
+
+  // Dynamic Session State for Hackathon Demo
+  const [sessions, setSessions] = useState([
+    { id: '1', device: "Mac OS • Chrome", location: "Mumbai, India", time: "Active Now", isCurrent: true },
+    { id: '2', device: "iOS • Safari", location: "Delhi, India", time: "Last active 2h ago", isCurrent: false }
+  ]);
+
+  useEffect(() => {
+    // Dynamically detect user's actual OS and browser for the "Current" session
+    const ua = navigator.userAgent;
+    let os = "Unknown OS";
+    let browser = "Unknown Browser";
+
+    if (ua.indexOf("Win") !== -1) os = "Windows";
+    if (ua.indexOf("Mac") !== -1) os = "Mac OS";
+    if (ua.indexOf("Linux") !== -1) os = "Linux";
+    if (ua.indexOf("Android") !== -1) os = "Android";
+    if (ua.indexOf("like Mac") !== -1) os = "iOS";
+
+    if (ua.indexOf("Chrome") !== -1) browser = "Chrome";
+    else if (ua.indexOf("Safari") !== -1) browser = "Safari";
+    else if (ua.indexOf("Firefox") !== -1) browser = "Firefox";
+    else if (ua.indexOf("Edge") !== -1) browser = "Edge";
+
+    setSessions([
+      { id: 'current', device: `${os} • ${browser}`, location: "Current Location", time: "Active Now", isCurrent: true },
+      { id: 'old1', device: "iOS • Safari", location: "Mumbai, India", time: "Last active 2h ago", isCurrent: false }
+    ]);
+  }, []);
+
+  const handleRevoke = (id: string) => {
+    setSessions(sessions.filter(s => s.id !== id));
+  };
 
   const handlePasswordChange = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -101,26 +134,35 @@ export default function SecurityPage() {
             </div>
             
             <div className="space-y-4">
-              <div className="bg-slate-900/50 rounded-lg p-4 border border-slate-700/50 flex items-center justify-between">
-                <div>
-                  <div className="text-slate-900 font-medium">Mac OS • Chrome</div>
-                  <div className="text-sm text-slate-400">Mumbai, India • Active Now</div>
+              {sessions.map((session) => (
+                <div key={session.id} className="bg-slate-50 rounded-lg p-4 border border-slate-200 flex items-center justify-between">
+                  <div>
+                    <div className="text-slate-900 font-medium">{session.device}</div>
+                    <div className="text-sm text-slate-500">{session.location} • {session.time}</div>
+                  </div>
+                  {session.isCurrent ? (
+                    <div className="text-xs bg-green-100 text-green-700 font-semibold px-2.5 py-1 rounded-full">Current</div>
+                  ) : (
+                    <button 
+                      onClick={() => handleRevoke(session.id)}
+                      className="text-sm font-semibold text-red-500 hover:text-red-600 hover:bg-red-50 px-3 py-1.5 rounded-lg transition-colors"
+                    >
+                      Revoke
+                    </button>
+                  )}
                 </div>
-                <div className="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded">Current</div>
-              </div>
-              
-              <div className="bg-slate-900/50 rounded-lg p-4 border border-slate-700/50 flex items-center justify-between">
-                <div>
-                  <div className="text-slate-900 font-medium">iOS • Safari</div>
-                  <div className="text-sm text-slate-400">Delhi, India • Last active 2h ago</div>
+              ))}
+
+              {sessions.length === 1 && (
+                <div className="text-center p-4 text-slate-500 text-sm italic">
+                  No other active sessions.
                 </div>
-                <button className="text-sm text-red-400 hover:text-red-300 transition-colors">Revoke</button>
-              </div>
+              )}
             </div>
             
-            <div className="mt-6 pt-4 border-t border-slate-700/50 flex items-start space-x-3">
+            <div className="mt-6 pt-4 border-t border-slate-200 flex items-start space-x-3">
               <AlertTriangle className="w-5 h-5 text-yellow-500 flex-shrink-0 mt-0.5" />
-              <p className="text-sm text-slate-400">
+              <p className="text-sm text-slate-500">
                 Revoking a session will invalidate its refresh token and sign the user out on that device.
               </p>
             </div>
