@@ -78,7 +78,7 @@ export default function ImagingPage() {
           modality: 'MG',
           status: 'Analyzed: BI-RADS 2',
           doctor: 'Dr. Sarah Jenkins',
-          imageUrl: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&q=80&w=600'
+          imageUrl: '/images/mammogram-cover.png'
         },
         {
           id: 'scan-2',
@@ -86,7 +86,7 @@ export default function ImagingPage() {
           modality: 'US',
           status: 'Completed: No abnormalities',
           doctor: 'Dr. Michael Chen',
-          imageUrl: 'https://images.unsplash.com/photo-1530497610245-94d3c16cda28?auto=format&fit=crop&q=80&w=600'
+          imageUrl: '/images/ultrasound-cover.png'
         }
       ];
       setScans(DUMMY_SCANS);
