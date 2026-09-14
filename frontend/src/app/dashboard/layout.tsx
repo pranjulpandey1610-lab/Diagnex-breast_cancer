@@ -146,7 +146,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               <Menu size={20} />
             </button>
             
-            {path !== '/dashboard' && (
               <button 
                 onClick={() => router.back()}
                 className="p-2 rounded-full hover:bg-slate-100 bg-white border border-slate-200 text-slate-600 transition-colors flex items-center justify-center shadow-sm flex-shrink-0"
@@ -154,7 +153,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               >
                 <ArrowLeft size={18} />
               </button>
-            )}
 
             <div className="ml-2 hidden sm:block min-w-0">
               <p className="text-xs font-bold text-[var(--color-primary-500)] tracking-widest uppercase mb-1 flex items-center gap-2 truncate">
