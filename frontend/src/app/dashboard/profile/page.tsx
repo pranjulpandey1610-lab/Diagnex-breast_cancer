@@ -7,6 +7,9 @@ import { useAuthStore } from "@/lib/auth";
 
 export default function ProfilePage() {
   const user = useAuthStore(s => s.user);
+  const setAuth = useAuthStore(s => s.setAuth);
+  const accessToken = useAuthStore(s => s.accessToken);
+  const refreshToken = useAuthStore(s => s.refreshToken);
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -41,6 +44,14 @@ export default function ProfilePage() {
     setSaving(true);
     try {
       await api.put("/profiles/me/patient", profile);
+      // Sync the new name back to the global auth store so the dashboard header updates instantly!
+      if (user && accessToken && refreshToken) {
+        setAuth(
+          { ...user, first_name: profile.first_name, last_name: profile.last_name },
+          accessToken,
+          refreshToken
+        );
+      }
       alert("Profile updated successfully!");
     } catch (err) {
       alert("Failed to update profile.");
