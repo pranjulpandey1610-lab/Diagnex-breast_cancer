@@ -64,6 +64,23 @@ export default function Home() {
               </Link>
             </div>
 
+            {/* Diagnostic Options */}
+            <div className="flex flex-col sm:flex-row gap-4 pt-4">
+               {[
+                  { icon: FileText, label: "Mammogram" },
+                  { icon: ScanLine, label: "Ultrasound" },
+                  { icon: Activity, label: "MRI" }
+                ].map((item, i) => (
+                  <div key={i} className="flex-1 flex items-center gap-3 p-4 rounded-xl bg-white border border-primary-100 shadow-sm hover:border-primary-300 hover:shadow-md transition-all cursor-pointer group">
+                    <div className="p-2 bg-primary-50 rounded-lg text-primary-700">
+                      <item.icon size={18} />
+                    </div>
+                    <span className="font-semibold text-primary-900">{item.label}</span>
+                    <ChevronRight size={16} className="ml-auto text-primary-300 group-hover:text-primary-500 transition-colors" />
+                  </div>
+                ))}
+            </div>
+
             {/* Mini Features List */}
             <div className="flex flex-wrap gap-8 pt-8 border-b border-primary-100/50 pb-16">
               {[
@@ -118,46 +135,7 @@ export default function Home() {
             {/* Added a blue overlay to force the color palette on the existing sticker */}
             <div className="absolute inset-0 bg-primary-300 mix-blend-color opacity-30 pointer-events-none"></div>
 
-            {/* Main Floating Card */}
-            <div className="absolute left-0 top-1/2 -translate-y-1/2 bg-white/95 backdrop-blur-md rounded-[1.5rem] shadow-2xl shadow-primary-900/10 p-6 w-[280px] border border-white z-20">
-              {/* Decorative shield badge top right of card */}
-              <div className="absolute -top-3 -right-3 bg-primary-500 text-white p-2 rounded-full shadow-lg">
-                 <CheckCircle2 size={16} />
-              </div>
 
-              <div className="flex items-center gap-3 mb-6">
-                <div className="p-2 bg-primary-50 rounded-lg text-primary-700 border border-primary-100">
-                  <Activity size={24} />
-                </div>
-                <div>
-                  <h3 className="font-bold text-primary-900 leading-none tracking-tight">DIAGNEX</h3>
-                  <span className="text-[9px] uppercase tracking-wider text-primary-500 font-semibold">Intelligent Diagnostics</span>
-                </div>
-              </div>
-
-              <div className="space-y-3">
-                {[
-                  { icon: FileText, label: "Mammogram" },
-                  { icon: ScanLine, label: "Ultrasound" },
-                  { icon: Activity, label: "MRI" }
-                ].map((item, i) => (
-                  <div key={i} className="flex items-center justify-between p-3.5 rounded-xl bg-white border border-primary-100 shadow-sm hover:border-primary-300 hover:shadow-md transition-all cursor-pointer group">
-                    <div className="flex items-center gap-3">
-                      <div className="p-1.5 bg-primary-50 rounded-full text-primary-700">
-                        <item.icon size={16} />
-                      </div>
-                      <span className="font-semibold text-sm text-primary-900">{item.label}</span>
-                    </div>
-                    <ChevronRight size={16} className="text-primary-300 group-hover:text-primary-500 transition-colors" />
-                  </div>
-                ))}
-              </div>
-
-              <div className="mt-6 pt-4 border-t border-primary-100 text-center text-xs font-semibold text-primary-500 flex items-center justify-center gap-2">
-                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary-300"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
-                 All your records, in one place
-              </div>
-            </div>
 
             {/* Small Floating Quote Card */}
             <div className="absolute right-0 top-1/2 bg-white/95 backdrop-blur-md rounded-2xl shadow-xl shadow-primary-900/5 p-5 w-40 border border-white z-20">
