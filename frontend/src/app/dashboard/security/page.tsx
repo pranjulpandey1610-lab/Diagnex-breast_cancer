@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Shield, Key, Smartphone, AlertTriangle } from "lucide-react";
 import { useAuthStore } from "@/lib/auth";
+import { createClient } from "@/utils/supabase/client";
 
 export default function SecurityPage() {
   const { user } = useAuthStore();
@@ -10,10 +11,40 @@ export default function SecurityPage() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handlePasswordChange = (e: React.FormEvent) => {
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handlePasswordChange = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Implementation for password change would call api.post('/auth/password-reset')
-    alert("Password change architecture is in place. API call omitted for briefness.");
+    setError("");
+    setSuccess("");
+
+    if (newPassword !== confirmPassword) {
+      setError("New passwords do not match.");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const supabase = createClient();
+      const { error: updateError } = await supabase.auth.updateUser({
+        password: newPassword
+      });
+
+      if (updateError) {
+        throw updateError;
+      }
+
+      setSuccess("Password successfully updated.");
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+    } catch (err: any) {
+      setError(err.message || "Failed to update password.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -31,20 +62,33 @@ export default function SecurityPage() {
             <h2 className="text-xl font-semibold text-slate-900">Change Password</h2>
           </div>
           
+          {error && (
+            <div className="bg-red-50 border border-red-200 text-red-600 p-3 rounded-xl mb-6 text-sm">
+              {error}
+            </div>
+          )}
+          {success && (
+            <div className="bg-green-50 border border-green-200 text-green-600 p-3 rounded-xl mb-6 text-sm">
+              {success}
+            </div>
+          )}
+
           <form onSubmit={handlePasswordChange} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5">Current Password</label>
-              <input type="password" value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} className="input-field" />
+              <label className="block text-sm font-medium text-slate-700 mb-1.5">Current Password</label>
+              <input type="password" required value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} className="input-field !bg-slate-50 !border-slate-200" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5">New Password</label>
-              <input type="password" value={newPassword} onChange={e => setNewPassword(e.target.value)} className="input-field" />
+              <label className="block text-sm font-medium text-slate-700 mb-1.5">New Password</label>
+              <input type="password" required value={newPassword} onChange={e => setNewPassword(e.target.value)} className="input-field !bg-slate-50 !border-slate-200" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5">Confirm New Password</label>
-              <input type="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} className="input-field" />
+              <label className="block text-sm font-medium text-slate-700 mb-1.5">Confirm New Password</label>
+              <input type="password" required value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} className="input-field !bg-slate-50 !border-slate-200" />
             </div>
-            <button type="submit" className="btn-primary w-full mt-2">Update Password</button>
+            <button type="submit" disabled={loading} className="btn-primary w-full mt-2">
+              {loading ? "Updating..." : "Update Password"}
+            </button>
           </form>
         </div>
 
