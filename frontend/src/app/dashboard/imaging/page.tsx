@@ -1,0 +1,197 @@
+"use client";
+
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import { 
+  UploadCloud, 
+  FileImage, 
+  Search,
+  Filter,
+  CheckCircle2,
+  Image as ImageIcon
+} from 'lucide-react';
+
+const mockScans = [
+  { id: 1, date: '2026-08-12', type: 'Mammogram', status: 'Analyzed', doctor: 'Dr. Sarah Chen' },
+  { id: 2, date: '2026-03-05', type: 'MRI', status: 'Analyzed', doctor: 'Dr. Michael Roberts' },
+  { id: 3, date: '2025-10-22', type: 'Ultrasound', status: 'Archived', doctor: 'Dr. Sarah Chen' }
+];
+
+export default function ImagingPage() {
+  const [isDragging, setIsDragging] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [isUploading, setIsUploading] = useState(false);
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    startMockUpload();
+  };
+
+  const startMockUpload = () => {
+    setIsUploading(true);
+    setUploadProgress(0);
+    const interval = setInterval(() => {
+      setUploadProgress(prev => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          setTimeout(() => {
+            setIsUploading(false);
+            setUploadProgress(0);
+          }, 1000);
+          return 100;
+        }
+        return prev + 10;
+      });
+    }, 200);
+  };
+
+  return (
+    <div className="max-w-6xl mx-auto space-y-8 pb-12">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div>
+          <h1 className="text-3xl font-bold text-slate-900 mb-2">Imaging & Scans</h1>
+          <p className="text-slate-500">Securely store and view your medical imaging records.</p>
+        </div>
+        <div className="flex items-center gap-3">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+            <input 
+              type="text" 
+              placeholder="Search scans..." 
+              className="input-field pl-10 w-64"
+            />
+          </div>
+          <button className="btn-secondary px-3">
+            <Filter size={18} />
+          </button>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        {/* Upload Zone */}
+        <div className="lg:col-span-1 space-y-6">
+          <div 
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+            className={`glass-panel p-8 rounded-3xl border-2 border-dashed transition-all duration-300 flex flex-col items-center justify-center text-center min-h-[300px]
+              ${isDragging 
+                ? 'border-[var(--color-primary-500)] bg-[var(--color-primary-500)]/10 scale-[1.02]' 
+                : 'border-white/20 hover:border-[var(--color-primary-500)]/50'}`}
+          >
+            {isUploading ? (
+              <div className="w-full space-y-4">
+                <div className="w-16 h-16 mx-auto rounded-full bg-[var(--color-primary-500)]/20 flex items-center justify-center">
+                  {uploadProgress === 100 ? (
+                    <CheckCircle2 size={32} className="text-emerald-400" />
+                  ) : (
+                    <UploadCloud size={32} className="text-[var(--color-primary-400)] animate-bounce" />
+                  )}
+                </div>
+                <h3 className="text-lg font-bold text-slate-900">
+                  {uploadProgress === 100 ? 'Upload Complete' : 'Uploading...'}
+                </h3>
+                <div className="w-full h-2 bg-white/80 rounded-full overflow-hidden">
+                  <motion.div 
+                    initial={{ width: 0 }}
+                    animate={{ width: `${uploadProgress}%` }}
+                    className="h-full bg-gradient-to-r from-[var(--color-primary-500)] to-[var(--color-accent-500)]"
+                  />
+                </div>
+              </div>
+            ) : (
+              <>
+                <div className="w-16 h-16 mb-4 rounded-full bg-white flex items-center justify-center">
+                  <UploadCloud size={32} className="text-slate-500" />
+                </div>
+                <h3 className="text-lg font-bold text-slate-900 mb-2">Drag & Drop Files</h3>
+                <p className="text-sm text-slate-500 mb-6 max-w-[200px]">
+                  Support for DICOM, PDF, JPG, and PNG up to 50MB.
+                </p>
+                <button onClick={startMockUpload} className="btn-secondary w-full">
+                  Browse Files
+                </button>
+              </>
+            )}
+          </div>
+
+          <div className="glass-panel p-6 rounded-2xl border-l-4 border-l-[var(--color-primary-500)]">
+            <h4 className="text-sm font-bold text-slate-900 mb-2 flex items-center gap-2">
+              <ShieldAlert className="text-[var(--color-primary-400)]" size={16} /> Privacy Note
+            </h4>
+            <p className="text-xs text-slate-500 leading-relaxed">
+              All uploaded scans are end-to-end encrypted. They will only be accessible to you and the specialists you explicitly grant access to.
+            </p>
+          </div>
+        </div>
+
+        {/* Scans Gallery */}
+        <div className="lg:col-span-2 glass-panel p-8 rounded-3xl">
+          <h2 className="text-xl font-bold text-slate-900 mb-6">Recent Scans</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {mockScans.map((scan, i) => (
+              <motion.div 
+                key={scan.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }}
+                className="group relative rounded-2xl overflow-hidden border border-slate-200 bg-white/80 hover:border-[var(--color-primary-500)]/50 transition-colors"
+              >
+                {/* Mock Image Area */}
+                <div className="h-40 bg-gradient-to-br from-gray-900 to-black relative flex items-center justify-center overflow-hidden">
+                  <ImageIcon size={48} className="text-gray-800" />
+                  
+                  {/* Overlay on hover */}
+                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3 backdrop-blur-sm">
+                    <button className="btn-primary py-2 px-4 text-sm">View</button>
+                    <button className="btn-secondary py-2 px-4 text-sm">Share</button>
+                  </div>
+                </div>
+                
+                {/* Details */}
+                <div className="p-5 border-t border-slate-200">
+                  <div className="flex justify-between items-start mb-2">
+                    <h3 className="font-bold text-slate-900 text-lg">{scan.type}</h3>
+                    <span className={`text-xs px-2 py-1 rounded-full border ${
+                      scan.status === 'Analyzed' 
+                        ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
+                        : 'bg-gray-500/10 text-slate-500 border-gray-500/20'
+                    }`}>
+                      {scan.status}
+                    </span>
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-sm text-slate-500 flex items-center gap-2">
+                      <FileImage size={14} /> {scan.date}
+                    </p>
+                    <p className="text-sm text-slate-500 flex items-center gap-2">
+                      <ShieldAlert size={14} /> {scan.doctor}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  );
+}
+
+// Just for icon matching since it's not imported at top
+const ShieldAlert = ({...props}) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>

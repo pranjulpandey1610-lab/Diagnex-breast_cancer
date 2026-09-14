@@ -87,12 +87,12 @@ export default function AssistantChatPage() {
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-6rem)] max-w-4xl mx-auto bg-white/50 backdrop-blur-xl border border-slate-200/60 rounded-3xl overflow-hidden shadow-lg shadow-blue-900/5">
+    <div className="flex flex-col h-[calc(100vh-6rem)] max-w-4xl mx-auto bg-white0 backdrop-blur-xl border border-slate-200/60 rounded-3xl overflow-hidden shadow-lg shadow-blue-900/5">
       
       {/* Header */}
       <div className="bg-white/80 border-b border-slate-200/60 p-4 flex items-center justify-between z-10">
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl shadow-sm text-white">
+          <div className="p-2 bg-gradient-to-br from-blue-500 to-sky-600 rounded-xl shadow-sm text-slate-900">
             <Bot className="w-5 h-5" />
           </div>
           <div>
@@ -125,7 +125,7 @@ export default function AssistantChatPage() {
               className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"} items-end gap-2`}
             >
               {msg.role === "assistant" && (
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white shrink-0 shadow-sm mb-1">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-sky-600 flex items-center justify-center text-slate-900 shrink-0 shadow-sm mb-1">
                   <Bot className="w-4 h-4" />
                 </div>
               )}
@@ -133,7 +133,7 @@ export default function AssistantChatPage() {
               <div 
                 className={`max-w-[80%] rounded-2xl px-5 py-3.5 shadow-sm text-[15px] leading-relaxed
                   ${msg.role === "user" 
-                    ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-br-sm" 
+                    ? "bg-gradient-to-r from-blue-600 to-sky-600 text-slate-900 rounded-br-sm" 
                     : "bg-white border border-slate-200/60 text-slate-700 rounded-bl-sm"
                   }
                 `}
@@ -154,7 +154,7 @@ export default function AssistantChatPage() {
               animate={{ opacity: 1 }}
               className="flex justify-start items-end gap-2"
             >
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white shrink-0 shadow-sm mb-1">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-sky-600 flex items-center justify-center text-slate-900 shrink-0 shadow-sm mb-1">
                 <Bot className="w-4 h-4" />
               </div>
               <div className="bg-white border border-slate-200/60 rounded-2xl rounded-bl-sm px-5 py-4 shadow-sm flex items-center gap-1">
@@ -219,7 +219,7 @@ export default function AssistantChatPage() {
             <button
               type="submit"
               disabled={!inputValue.trim() || loading}
-              className="p-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:hover:bg-blue-600 transition-colors shadow-sm"
+              className="p-2.5 bg-blue-600 text-slate-900 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:hover:bg-blue-600 transition-colors shadow-sm"
             >
               <Send className="w-4 h-4" />
             </button>

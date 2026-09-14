@@ -1,4 +1,155 @@
+"use client";
 import Link from 'next/link';
-import { Activity, ArrowRight, FileLock2, MapPin, ScanLine, ShieldCheck, Sparkles } from 'lucide-react';
-const features=[['Describe a Change','A calm, structured way to record a new breast-health concern.',Activity],['Secure Report Archive','Keep PDF and image records together in one private space.',FileLock2],['Breast Scan Record Support','Organize scan records without making image diagnoses.',ScanLine],['Find a Specialist','Access clearly marked contact details when follow-up is needed.',MapPin]] as const;
-export default function Home(){return <div className="landing"><header className="topbar"><Link href="/" className="brand"><span><Activity size={20}/></span>Diagnex</Link><div><Link className="text-link" href="/auth/login">Sign in</Link><Link className="btn" href="/auth/login">Start a check <ArrowRight size={16}/></Link></div></header><main><section className="hero"><div className="eyebrow"><Sparkles size={15}/> Breast health, thoughtfully organized</div><h1>Breast health support,<br/><em>organized around safer next steps.</em></h1><p>Clearer breast-health information. Safer next steps. Diagnex helps you document changes and organize records—without replacing clinical care.</p><div className="hero-actions"><Link className="btn" href="/auth/login">Start Breast Awareness Check <ArrowRight size={16}/></Link><a className="secondary" href="#how">Explore How It Works</a></div><div className="safety"><ShieldCheck size={19}/><span><b>Private by design.</b> Diagnex is a breast-health screening and record-organization prototype. It is not a diagnosis.</span></div></section><section id="how" className="feature-grid">{features.map(([title,body,Icon],i)=><article className="feature" key={title}><span className="feature-icon"><Icon/></span><small>0{i+1}</small><h2>{title}</h2><p>{body}</p></article>)}</section><section className="landing-note"><div><span className="eyebrow">A more grounded experience</span><h2>Information you can understand, in a space that feels safe.</h2></div><p>New or persistent breast changes should be assessed by a qualified clinician. Diagnex provides information organization and contact guidance only.</p></section></main><footer>© 2026 Diagnex <span>Prototype Demo Mode</span></footer></div>}
+import { Activity, ArrowRight, FileLock2, MapPin, ScanLine, ShieldCheck, Sparkles, ChevronRight } from 'lucide-react';
+import { motion } from 'framer-motion';
+
+const features = [
+  {
+    title: 'Describe a Change',
+    body: 'A calm, structured way to record a new breast-health concern.',
+    Icon: Activity,
+    color: 'text-sky-400'
+  },
+  {
+    title: 'Secure Report Archive',
+    body: 'Keep PDF and image records together in one private space.',
+    Icon: FileLock2,
+    color: 'text-cyan-400'
+  },
+  {
+    title: 'Breast Scan Record Support',
+    body: 'Organize scan records without making image diagnoses.',
+    Icon: ScanLine,
+    color: 'text-blue-400'
+  },
+  {
+    title: 'Find a Specialist',
+    body: 'Access clearly marked contact details when follow-up is needed.',
+    Icon: MapPin,
+    color: 'text-emerald-400'
+  }
+];
+
+export default function Home() {
+  return (
+    <div className="min-h-screen flex flex-col relative overflow-x-hidden bg-slate-50">
+      {/* Dynamic Background Blurs */}
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-600/20 rounded-full blur-[120px] pointer-events-none -z-10" />
+      <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-cyan-600/10 rounded-full blur-[100px] pointer-events-none -z-10" />
+
+      {/* Header */}
+      <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur-md px-6 py-4 flex justify-between items-center shadow-sm">
+        <Link href="/" className="flex items-center gap-3 group">
+          <img src="/logo.png" alt="Diagnex Logo" className="w-10 h-10 object-contain drop-shadow-[0_0_8px_rgba(30,136,229,0.2)] transition-transform group-hover:scale-105" />
+          <span className="text-2xl font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-blue-900 to-primary-500 uppercase">Diagnex</span>
+        </Link>
+        <div className="flex items-center gap-6">
+          <Link className="text-slate-500 hover:text-slate-900 transition-colors text-sm font-medium hidden sm:block" href="/auth/login">
+            Sign In
+          </Link>
+          <Link className="btn-primary text-sm px-5 py-2.5" href="/auth/login">
+            Start a Check <ArrowRight size={16} />
+          </Link>
+        </div>
+      </header>
+
+      <main className="flex-1 flex flex-col items-center justify-center pt-24 pb-20 px-4 z-10">
+        
+        {/* Hero Section */}
+        <motion.section 
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="max-w-4xl text-center space-y-8 mb-32"
+        >
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary-500/20 bg-primary-500/5 backdrop-blur-md text-sm text-primary-600 mx-auto">
+            <Sparkles size={16} className="text-accent-500" /> 
+            Intelligent Diagnostics
+          </div>
+          
+          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-slate-900 leading-tight">
+            Breast health support,<br />
+            <span className="text-gradient font-black">organized around safer next steps.</span>
+          </h1>
+          
+          <p className="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
+            Clearer breast-health information. Safer next steps. Diagnex helps you document changes and organize records—without replacing clinical care.
+          </p>
+          
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6">
+            <Link className="btn-primary py-3.5 px-8 text-lg w-full sm:w-auto shadow-lg shadow-primary-500/20" href="/auth/login">
+              Start Breast Awareness Check <ArrowRight size={20} className="ml-2" />
+            </Link>
+            <a className="btn-secondary py-3.5 px-8 text-lg w-full sm:w-auto" href="#how">
+              Explore How It Works
+            </a>
+          </div>
+
+          <div className="flex items-center justify-center gap-3 pt-12 text-sm text-slate-500">
+            <ShieldCheck size={20} className="text-emerald-500" />
+            <span><b className="text-slate-700">Private by design.</b> Diagnex is a secure prototype. It is not a diagnosis.</span>
+          </div>
+        </motion.section>
+
+        {/* Features Grid */}
+        <section id="how" className="max-w-6xl w-full mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 mb-32">
+          {features.map((feature, i) => (
+            <motion.article 
+              key={feature.title}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1, duration: 0.5 }}
+              className="glass-panel p-8 relative overflow-hidden group border-slate-200"
+            >
+              <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary-500/5 to-transparent rounded-bl-full -z-10 transition-transform group-hover:scale-110`} />
+              
+              <div className="flex justify-between items-start mb-6">
+                <div className="p-4 bg-white border border-slate-100 shadow-sm rounded-2xl">
+                  <feature.Icon className={feature.color} size={28} />
+                </div>
+                <span className="text-5xl font-black text-slate-100 tracking-tighter">0{i+1}</span>
+              </div>
+              
+              <h2 className="text-2xl font-bold text-slate-900 mb-3">{feature.title}</h2>
+              <p className="text-slate-600 leading-relaxed">{feature.body}</p>
+            </motion.article>
+          ))}
+        </section>
+
+        {/* CTA Section */}
+        <section className="w-full max-w-4xl mx-auto glass-panel p-12 text-center rounded-[2.5rem] border-primary-500/20 relative overflow-hidden bg-white shadow-xl shadow-primary-500/5">
+          <div className="absolute inset-0 bg-gradient-to-r from-primary-500/5 via-accent-500/5 to-primary-500/5 opacity-50" />
+          
+          <div className="relative z-10 space-y-6">
+            <span className="text-primary-600 font-bold tracking-wider text-sm uppercase">A more grounded experience</span>
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900">
+              Information you can understand, <br/>in a space that feels safe.
+            </h2>
+            <p className="text-slate-600 max-w-xl mx-auto">
+              New or persistent breast changes should be assessed by a qualified clinician. Diagnex provides information organization and contact guidance only.
+            </p>
+            
+            <div className="pt-6">
+              <Link className="inline-flex items-center gap-2 text-primary-600 font-bold hover:text-primary-500 transition-colors" href="/auth/register">
+                Create your secure account <ChevronRight size={18} />
+              </Link>
+            </div>
+          </div>
+        </section>
+
+      </main>
+
+      <footer className="border-t border-slate-200 mt-auto bg-white py-10 px-6 text-center text-sm text-slate-500 w-full relative z-10 shadow-inner">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="flex items-center gap-2 mb-4 md:mb-0">
+          <Activity size={16} /> © 2026 Diagnex 
+        </div>
+        <div className="badge badge-neon">
+          Prototype Demo Mode
+        </div>
+        </div>
+      </footer>
+    </div>
+  );
+}

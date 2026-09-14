@@ -112,7 +112,7 @@ function SummaryContent() {
             <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-3">Affected Side</h3>
             <div className="flex flex-wrap gap-3">
               <AnimatePresence>
-                {state.side && renderChip("side", state.side, "bg-indigo-50 text-indigo-700 border-indigo-200")}
+                {state.side && renderChip("side", state.side, "bg-sky-50 text-sky-700 border-sky-200")}
                 {!state.side && <p className="text-sm text-slate-400 italic">None specified</p>}
               </AnimatePresence>
             </div>
@@ -166,13 +166,13 @@ function SummaryContent() {
             animate={{ opacity: 1, y: 0 }}
             className="mt-10 pt-8 border-t border-slate-100"
           >
-            <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-6 sm:p-8 text-white relative overflow-hidden shadow-xl">
+            <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-6 sm:p-8 text-slate-900 relative overflow-hidden shadow-xl">
               <div className="absolute top-0 right-0 p-8 opacity-5">
                 <AlertTriangle className="w-48 h-48" />
               </div>
               
               <div className="relative z-10">
-                <div className="inline-flex items-center gap-2 bg-white/10 px-3 py-1 rounded-full text-sm font-medium mb-4 backdrop-blur-md border border-white/10">
+                <div className="inline-flex items-center gap-2 bg-white/10 px-3 py-1 rounded-full text-sm font-medium mb-4 backdrop-blur-md border border-slate-200">
                   <CheckCircle className="w-4 h-4 text-emerald-400" />
                   Analysis Complete
                 </div>

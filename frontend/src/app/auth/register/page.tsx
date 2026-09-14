@@ -50,11 +50,11 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 py-12 relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center p-4 py-12 relative overflow-x-hidden">
       
       {/* Decorative background blurs */}
       <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-blue-600/20 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-purple-600/20 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-cyan-600/20 rounded-full blur-[120px] pointer-events-none" />
 
       <motion.div 
         className="w-full max-w-xl relative z-10"
@@ -125,7 +125,7 @@ export default function RegisterPage() {
                 <div className="relative flex items-center justify-center mt-0.5">
                   <input type="checkbox" checked={consentStorage} onChange={e => setConsentStorage(e.target.checked)} className="peer sr-only" />
                   <div className="w-5 h-5 border-2 border-slate-300 rounded bg-white peer-checked:bg-blue-500 peer-checked:border-blue-500 transition-all flex items-center justify-center">
-                    {consentStorage && <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>}
+                    {consentStorage && <svg className="w-3.5 h-3.5 text-slate-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>}
                   </div>
                 </div>
                 <span className="text-sm text-slate-500 group-hover:text-slate-700 transition-colors leading-snug">
@@ -137,7 +137,7 @@ export default function RegisterPage() {
                 <div className="relative flex items-center justify-center mt-0.5">
                   <input type="checkbox" checked={consentResearch} onChange={e => setConsentResearch(e.target.checked)} className="peer sr-only" />
                   <div className="w-5 h-5 border-2 border-slate-300 rounded bg-white peer-checked:bg-blue-500 peer-checked:border-blue-500 transition-all flex items-center justify-center">
-                    {consentResearch && <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>}
+                    {consentResearch && <svg className="w-3.5 h-3.5 text-slate-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>}
                   </div>
                 </div>
                 <span className="text-sm text-slate-500 group-hover:text-slate-700 transition-colors leading-snug">
