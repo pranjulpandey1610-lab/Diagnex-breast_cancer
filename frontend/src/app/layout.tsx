@@ -16,9 +16,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="en"
-      className={`${sora.variable} h-full antialiased`}
+      className={`${sora.variable} h-full antialiased overflow-x-hidden`}
     >
-      <body className="min-h-full flex flex-col font-sora">{children}</body>
+      <body className="min-h-full flex flex-col font-sora overflow-x-hidden w-full">{children}</body>
     </html>
   );
 }
