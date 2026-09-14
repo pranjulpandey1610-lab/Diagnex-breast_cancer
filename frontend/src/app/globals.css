@@ -89,24 +89,26 @@ body {
 
   .input-field {
     width: 100%;
-    background-color: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.6);
+    border: 1px solid var(--color-surface-border);
     border-radius: 0.75rem;
     padding: 0.75rem 1rem;
-    color: white;
+    color: var(--color-foreground);
     font-size: 0.95rem;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
   
   .input-field::placeholder {
-    color: rgba(255, 255, 255, 0.4);
+    color: var(--color-neutral-500);
+    opacity: 0.7;
   }
   
   .input-field:focus {
     outline: none;
     border-color: var(--color-primary-500);
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
-    background-color: rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 0 4px rgba(74, 137, 184, 0.15);
+    background-color: #ffffff;
+    transform: translateY(-2px);
   }
 
   .btn-primary {

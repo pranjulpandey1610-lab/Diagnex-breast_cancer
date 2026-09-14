@@ -120,15 +120,15 @@ export default function LoginPage() {
             <div className="space-y-1.5">
               <label className="block text-sm font-medium text-slate-700 ml-1">Email address</label>
               <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none transition-colors group-focus-within:text-blue-400 text-slate-500">
-                  <Mail className="h-5 w-5" />
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none transition-all duration-300 group-focus-within:text-[var(--color-primary-500)] group-focus-within:-translate-y-0.5 group-focus-within:scale-110 text-slate-400">
+                  <Mail className="h-5 w-5 drop-shadow-sm" />
                 </div>
                 <input
                   type="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="input-field pl-11"
+                  className="input-field !pl-11"
                   placeholder="name@example.com"
                 />
               </div>
@@ -139,16 +139,16 @@ export default function LoginPage() {
                 <label className="block text-sm font-medium text-slate-700">Password</label>
                 <Link href="#" className="text-xs text-blue-400 hover:text-blue-300 transition-colors">Forgot password?</Link>
               </div>
-              <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none transition-colors group-focus-within:text-blue-400 text-slate-500">
-                  <Lock className="h-5 w-5" />
+              <div className="relative group mt-1">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none transition-all duration-300 group-focus-within:text-[var(--color-primary-500)] group-focus-within:-translate-y-0.5 group-focus-within:scale-110 text-slate-400">
+                  <Lock className="h-5 w-5 drop-shadow-sm" />
                 </div>
                 <input
                   type="password"
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="input-field pl-11"
+                  className="input-field !pl-11"
                   placeholder="••••••••"
                 />
               </div>
