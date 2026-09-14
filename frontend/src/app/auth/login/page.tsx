@@ -90,12 +90,7 @@ export default function LoginPage() {
         variants={containerVariants}
       >
         <motion.div variants={itemVariants} className="flex flex-col items-center mb-10">
-          <div className="p-4 bg-gradient-to-br from-sky-500/10 to-teal-500/10 border border-slate-200 rounded-2xl mb-5 shadow-sm backdrop-blur-md">
-            <Activity className="w-10 h-10 text-sky-500" />
-          </div>
-          <h1 className="text-4xl font-extrabold tracking-tight mb-2">
-            <span className="text-gradient">Diagnex</span>
-          </h1>
+          <img src="/login-logo.png" alt="Diagnex Logo" className="w-56 h-auto object-contain mb-4 drop-shadow-md" />
           <p className="text-slate-500 font-medium">Secure Breast Health Screening</p>
         </motion.div>
 
