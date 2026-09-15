@@ -384,12 +384,14 @@ export default function ImagingPage() {
                   
                   {/* Details */}
                   <div className="p-5 border-t border-slate-200">
-                    <div className="flex justify-between items-start mb-2">
-                      <h3 className="font-bold text-slate-900 text-lg">{modalityName[scan.modality] || scan.modality}</h3>
-                      <span className={`text-xs px-2 py-1 rounded-full border ${
-                        scan.status.toLowerCase().includes('analyzed') || scan.status.toLowerCase().includes('completed')
-                          ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
-                          : 'bg-gray-500/10 text-slate-500 border-gray-500/20'
+                    <div className="flex flex-col gap-2 items-start mb-3">
+                      <h3 className="font-bold text-slate-900 text-lg leading-tight">{modalityName[scan.modality] || scan.modality}</h3>
+                      <span className={`text-xs px-2.5 py-1.5 rounded-lg border font-medium leading-snug ${
+                        scan.status.toLowerCase().includes('detected') || scan.status.toLowerCase().includes('malignan') || scan.status.toLowerCase().includes('carcinoma')
+                          ? 'bg-rose-500/10 text-rose-600 border-rose-500/20'
+                          : scan.status.toLowerCase().includes('analyzed') || scan.status.toLowerCase().includes('completed') || scan.status.toLowerCase().includes('benign')
+                            ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20'
+                            : 'bg-gray-500/10 text-slate-500 border-gray-500/20'
                       }`}>
                         {scan.status}
                       </span>
