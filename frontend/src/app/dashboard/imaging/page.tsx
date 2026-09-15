@@ -216,8 +216,8 @@ export default function ImagingPage() {
         let mockModality = 'US';
         
         if (scanType === 'Histopathology') {
-          mockStatus = 'Analyzed: Cellular Abnormalities Detected';
-          mockModality = 'Biopsy/Histology';
+          mockStatus = 'Invasive Ductal Carcinoma Detected (98.4% Confidence)';
+          mockModality = 'Breast Histopathology (H&E)';
         } else if (file.type.includes('image')) {
           mockStatus = 'Analyzed: BI-RADS 2 (Benign)';
           mockModality = 'Mammogram / US';
