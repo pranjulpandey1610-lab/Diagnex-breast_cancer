@@ -219,7 +219,17 @@ export default function ImagingPage() {
           mockStatus = 'Invasive Ductal Carcinoma Detected (98.4% Confidence)';
           mockModality = 'Breast Histopathology (H&E)';
         } else if (file.type.includes('image')) {
-          mockStatus = 'Analyzed: BI-RADS 2 (Benign)';
+          // Deterministically pick a result based on file size so the same image always gives the same result
+          const statuses = [
+            'Analyzed: BI-RADS 2 (Benign)',
+            'Analyzed: BI-RADS 4B (Suspicious Microcalcifications)',
+            'Analyzed: BI-RADS 5 (Highly Suggestive of Malignancy)',
+            'Analyzed: BI-RADS 3 (Probably Benign - 6 mo follow up)',
+            'Analyzed: BI-RADS 4C (Suspicious Mass Detected)'
+          ];
+          // Use filename length + size to create a stable index
+          const stableIndex = (file.name.length + file.size) % statuses.length;
+          mockStatus = statuses[stableIndex];
           mockModality = 'Mammogram / US';
         } else if (file.type.includes('pdf')) {
           mockModality = 'Clinical Document';
