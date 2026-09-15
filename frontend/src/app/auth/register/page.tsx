@@ -89,14 +89,9 @@ export default function RegisterPage() {
         animate="visible"
         variants={containerVariants}
       >
-        <motion.div variants={itemVariants} className="flex flex-col items-center mb-8">
-          <div className="p-4 bg-gradient-to-br from-sky-500/10 to-teal-500/10 border border-slate-200 rounded-2xl mb-4 shadow-sm backdrop-blur-md">
-            <Activity className="w-10 h-10 text-sky-500" />
-          </div>
-          <h1 className="text-4xl font-extrabold tracking-tight mb-2">
-            <span className="text-gradient">Join Diagnex</span>
-          </h1>
-          <p className="text-slate-500 font-medium">Secure Breast Health Screening</p>
+        <motion.div variants={itemVariants} className="flex flex-col items-center mb-10">
+          <img src="/login-logo.png" alt="Diagnex Logo" className="w-56 h-auto object-contain mb-4 drop-shadow-md" />
+          <p className="text-slate-500 font-medium">Create your secure account</p>
         </motion.div>
 
         <motion.div variants={itemVariants} className="glass-panel p-8 sm:p-10">
