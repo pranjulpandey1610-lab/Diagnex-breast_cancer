@@ -125,6 +125,7 @@ export default function ImagingPage() {
           const data = imgData.data;
           
           let colorPixelCount = 0;
+          let pinkPurplePixelCount = 0;
           const totalPixels = data.length / 4;
           
           for (let i = 0; i < data.length; i += 4) {
@@ -135,20 +136,34 @@ export default function ImagingPage() {
             const maxDiff = Math.max(Math.abs(r - g), Math.abs(r - b), Math.abs(g - b));
             if (maxDiff > 25) { 
               colorPixelCount++;
+              // Check for pink/purple (H&E stain characteristics: Red and Blue higher than Green)
+              if (r > g + 15 && b > g + 10) {
+                pinkPurplePixelCount++;
+              }
             }
           }
-          // If more than 10% of pixels are colored, reject it
-          resolve(colorPixelCount / totalPixels < 0.10);
+          
+          // It's a medical scan if it's mostly grayscale, OR if the colored pixels are predominantly pink/purple (Histology)
+          const isGrayscale = (colorPixelCount / totalPixels) < 0.10;
+          const isHistology = colorPixelCount > 0 && (pinkPurplePixelCount / colorPixelCount) > 0.50;
+          
+          resolve({
+            isValid: isGrayscale || isHistology,
+            scanType: isHistology ? 'Histopathology' : 'Radiology'
+          });
         };
-        img.onerror = () => resolve(true);
+        img.onerror = () => resolve({ isValid: true, scanType: 'Unknown' });
         img.src = url;
       });
 
-      if (!isMedicalScan) {
+      if (!(isMedicalScan as any).isValid) {
         setIsUploading(false);
-        setError("AI Content Filter: Upload rejected. The image appears to be a standard photograph or object, not a valid medical scan (Breast Ultrasound / Mammogram).");
+        setError("AI Content Filter: Upload rejected. The image appears to be a standard photograph or object, not a valid medical scan (Radiology or Histopathology).");
         return;
       }
+      
+      // Store the detected scan type for the simulated result
+      (file as any).detectedScanType = (isMedicalScan as any).scanType;
     }
 
     // Simulate upload progress for demo
@@ -195,11 +210,26 @@ export default function ImagingPage() {
         
         // Add a mock scan to the list so it appears in the UI
         const fileUrl = URL.createObjectURL(file);
+        const scanType = (file as any).detectedScanType;
+        
+        let mockStatus = 'Analyzed: Pending Review';
+        let mockModality = 'US';
+        
+        if (scanType === 'Histopathology') {
+          mockStatus = 'Analyzed: Cellular Abnormalities Detected';
+          mockModality = 'Biopsy/Histology';
+        } else if (file.type.includes('image')) {
+          mockStatus = 'Analyzed: BI-RADS 2 (Benign)';
+          mockModality = 'Mammogram / US';
+        } else if (file.type.includes('pdf')) {
+          mockModality = 'Clinical Document';
+        }
+
         const newMockScan: Scan = {
           id: `scan-demo-${Date.now()}`,
           created_at: new Date().toISOString(),
-          modality: file.type.includes('pdf') ? 'Clinical Document' : 'US',
-          status: 'Analyzed: BI-RADS 2 (Benign)',
+          modality: mockModality,
+          status: mockStatus,
           doctor: 'Dr. Sarah Jenkins',
           imageUrl: file.type.includes('image') ? fileUrl : undefined
         };
