@@ -4,10 +4,13 @@ import { ChangeEvent, useState } from "react";
 import { CheckCircle2, FileUp, LoaderCircle, LockKeyhole } from "lucide-react";
 import api from "@/lib/api";
 
+import { useRouter } from "next/navigation";
+
 const categories = ["mammogram report", "breast ultrasound report", "breast MRI report", "pathology report", "biopsy report", "genetic test report", "referral letter", "other clinical report"];
 const accepted = new Set(["application/pdf", "image/jpeg", "image/png"]);
 
 export default function UploadPage() {
+  const router = useRouter();
   const [file, setFile] = useState<File | null>(null); const [category, setCategory] = useState(categories[0]);
   const [status, setStatus] = useState<"idle" | "uploading" | "complete">("idle"); const [message, setMessage] = useState("");
   const onFile = (event: ChangeEvent<HTMLInputElement>) => { const selected = event.target.files?.[0] || null; setMessage(""); if (selected && (!accepted.has(selected.type) || selected.size > 20 * 1024 * 1024)) { setFile(null); setMessage("Choose a PDF, JPG, or PNG smaller than 20 MB."); return; } setFile(selected); };
@@ -19,6 +22,7 @@ export default function UploadPage() {
       const { data } = await api.post("/reports", body, { headers: { "Content-Type": "multipart/form-data" } }); 
       setStatus("complete"); 
       setMessage(data.message || "Stored privately. Local extraction will begin after security checks."); 
+      setTimeout(() => router.push('/dashboard/reports'), 1000);
     }
     catch (error: unknown) { 
       // Demo Mode Fallback: Simulate successful upload if backend is offline
@@ -27,7 +31,8 @@ export default function UploadPage() {
       // Artificial delay to make it feel realistic
       setTimeout(() => {
         setStatus("complete"); 
-        setMessage("Demo Mode: Report securely verified and stored privately. Local extraction will begin shortly."); 
+        setMessage("Demo Mode: Report verified. Redirecting to your AI summary..."); 
+        setTimeout(() => router.push('/dashboard/reports'), 1500);
       }, 1500);
     }
   };
