@@ -216,16 +216,16 @@ export default function ImagingPage() {
         let mockModality = 'US';
         
         if (scanType === 'Histopathology') {
-          mockStatus = 'Invasive Ductal Carcinoma Detected (98.4% Confidence)';
+          mockStatus = 'Cancer Confirmed: Immediate oncology consultation and treatment planning required.';
           mockModality = 'Breast Histopathology (H&E)';
         } else if (file.type.includes('image')) {
           // Deterministically pick a result based on file size so the same image always gives the same result
           const statuses = [
-            'Analyzed: BI-RADS 2 (Benign)',
-            'Analyzed: BI-RADS 4B (Suspicious Microcalcifications)',
-            'Analyzed: BI-RADS 5 (Highly Suggestive of Malignancy)',
-            'Analyzed: BI-RADS 3 (Probably Benign - 6 mo follow up)',
-            'Analyzed: BI-RADS 4C (Suspicious Mass Detected)'
+            'Clear Scan: No signs of cancer. Keep up with routine checkups.',
+            'Suspicious Areas Found: Further testing and biopsy recommended.',
+            'High Risk Detected: Urgent specialist consultation and biopsy required.',
+            'Minor Changes Found: Probably benign. Follow-up scan in 6 months.',
+            'Abnormal Mass Detected: Immediate biopsy and specialist review needed.'
           ];
           // Use filename length + size to create a stable index
           const stableIndex = (file.name.length + file.size) % statuses.length;
@@ -387,11 +387,13 @@ export default function ImagingPage() {
                     <div className="flex flex-col gap-2 items-start mb-3">
                       <h3 className="font-bold text-slate-900 text-lg leading-tight">{modalityName[scan.modality] || scan.modality}</h3>
                       <span className={`text-xs px-2.5 py-1.5 rounded-lg border font-medium leading-snug ${
-                        scan.status.toLowerCase().includes('detected') || scan.status.toLowerCase().includes('malignan') || scan.status.toLowerCase().includes('carcinoma')
+                        scan.status.toLowerCase().includes('confirmed') || scan.status.toLowerCase().includes('high risk') || scan.status.toLowerCase().includes('abnormal')
                           ? 'bg-rose-500/10 text-rose-600 border-rose-500/20'
-                          : scan.status.toLowerCase().includes('analyzed') || scan.status.toLowerCase().includes('completed') || scan.status.toLowerCase().includes('benign')
-                            ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20'
-                            : 'bg-gray-500/10 text-slate-500 border-gray-500/20'
+                          : scan.status.toLowerCase().includes('suspicious') || scan.status.toLowerCase().includes('minor changes')
+                            ? 'bg-amber-500/10 text-amber-600 border-amber-500/20'
+                            : scan.status.toLowerCase().includes('clear') || scan.status.toLowerCase().includes('benign')
+                              ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20'
+                              : 'bg-gray-500/10 text-slate-500 border-gray-500/20'
                       }`}>
                         {scan.status}
                       </span>
