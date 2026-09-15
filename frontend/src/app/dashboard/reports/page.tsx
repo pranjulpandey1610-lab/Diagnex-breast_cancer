@@ -75,6 +75,13 @@ export default function ReportsPage() {
 
   return (
     <div className="max-w-6xl mx-auto space-y-8 pb-12">
+      <style dangerouslySetInnerHTML={{__html: `
+        @media print {
+          body * { visibility: hidden; }
+          #report-modal, #report-modal * { visibility: visible; }
+          #report-modal { position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: white; margin: 0; padding: 0; box-shadow: none; overflow: visible; }
+        }
+      `}} />
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
           <h1 className="text-3xl font-bold text-slate-900 mb-2">Saved Reports</h1>
@@ -176,7 +183,10 @@ export default function ReportsPage() {
                         <button 
                           className="p-2 rounded-lg bg-white/10 hover:bg-[var(--color-accent-600)] text-slate-600 hover:text-slate-900 transition-colors" 
                           title="Download PDF"
-                          onClick={() => window.open(`http://localhost:8000/api/reports/${report.id}/download`, '_blank')}
+                          onClick={() => {
+                            setSelectedReport(report);
+                            setTimeout(() => window.print(), 500);
+                          }}
                         >
                           <Download size={18} />
                         </button>
@@ -190,66 +200,75 @@ export default function ReportsPage() {
         </div>
       </div>
 
-      {/* Report Modal */}
+      {/* Report Modal / A4 Document View */}
       {selectedReport && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-start justify-center p-4 sm:p-8 bg-slate-900/50 backdrop-blur-sm overflow-y-auto">
           <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] flex flex-col"
+            id="report-modal"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-white shadow-2xl w-full max-w-[210mm] min-h-[297mm] mx-auto flex flex-col relative shrink-0"
           >
-            <div className="bg-white border-b border-slate-200 p-6 flex justify-between items-center rounded-t-2xl z-10 shrink-0">
-              <div className="flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-blue-50 text-blue-600">
-                  <FileText size={24} />
+            {/* Header / Letterhead */}
+            <div className="bg-white border-b-2 border-slate-800 p-8 flex justify-between items-start z-10 shrink-0">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded bg-slate-900 text-white flex items-center justify-center font-bold text-xl">
+                  DX
                 </div>
                 <div>
-                  <h2 className="text-xl font-bold text-slate-900">{selectedReport.title}</h2>
-                  <p className="text-sm text-slate-500">ID: {selectedReport.id} • {new Date(selectedReport.date).toLocaleDateString()}</p>
+                  <h2 className="text-2xl font-bold text-slate-900 tracking-tight">DIAGNEX</h2>
+                  <p className="text-sm font-semibold text-slate-500 uppercase tracking-widest">{selectedReport.type}</p>
                 </div>
+              </div>
+              <div className="text-right">
+                <p className="text-sm font-bold text-slate-900">ID: {selectedReport.id}</p>
+                <p className="text-sm text-slate-500">Date: {new Date(selectedReport.date).toLocaleDateString()}</p>
               </div>
               <button 
                 onClick={() => setSelectedReport(null)}
-                className="p-2 hover:bg-slate-100 rounded-full text-slate-500 transition-colors"
+                className="absolute top-4 right-4 p-2 hover:bg-slate-100 rounded-full text-slate-400 hover:text-slate-600 transition-colors print:hidden"
               >
                 ✕
               </button>
             </div>
             
-            <div className="p-8 space-y-8 overflow-y-auto">
+            <div className="p-10 space-y-10 flex-grow">
+              <div className="border-l-4 border-slate-800 pl-6 py-2">
+                <h1 className="text-3xl font-serif font-bold text-slate-900">{selectedReport.title}</h1>
+                <p className="text-slate-600 mt-2 font-medium">Provider: {selectedReport.doctor}</p>
+              </div>
+
               {selectedReport.details ? (
                 <>
                   <section>
-                    <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4 border-b pb-2">Diagnostic Context</h3>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="p-4 bg-slate-50 rounded-xl">
-                        <p className="text-xs text-slate-500 mb-1">Primary Diagnosis</p>
-                        <p className="font-semibold text-slate-800">{selectedReport.details.diagnosis}</p>
+                    <h3 className="text-sm font-bold text-slate-800 uppercase tracking-widest mb-6 border-b-2 border-slate-100 pb-2">Diagnostic Context</h3>
+                    <div className="grid grid-cols-2 gap-x-8 gap-y-6">
+                      <div>
+                        <p className="text-xs text-slate-500 font-bold uppercase tracking-wider mb-1">Primary Diagnosis</p>
+                        <p className="font-semibold text-slate-900 text-lg">{selectedReport.details.diagnosis}</p>
                       </div>
-                      <div className="p-4 bg-slate-50 rounded-xl">
-                        <p className="text-xs text-slate-500 mb-1">Tumor Dimensions</p>
-                        <p className="font-semibold text-slate-800">{selectedReport.details.tumorSize}</p>
+                      <div>
+                        <p className="text-xs text-slate-500 font-bold uppercase tracking-wider mb-1">Tumor Dimensions</p>
+                        <p className="font-semibold text-slate-900 text-lg">{selectedReport.details.tumorSize}</p>
                       </div>
-                      <div className="p-4 bg-slate-50 rounded-xl">
-                        <p className="text-xs text-slate-500 mb-1">Receptor Status</p>
-                        <p className="font-semibold text-slate-800">{selectedReport.details.receptorStatus}</p>
+                      <div>
+                        <p className="text-xs text-slate-500 font-bold uppercase tracking-wider mb-1">Receptor Status</p>
+                        <p className="font-semibold text-slate-900 text-lg">{selectedReport.details.receptorStatus}</p>
                       </div>
-                      <div className="p-4 bg-slate-50 rounded-xl">
-                        <p className="text-xs text-slate-500 mb-1">Lymph Nodes</p>
-                        <p className="font-semibold text-slate-800">{selectedReport.details.lymphNodes}</p>
+                      <div>
+                        <p className="text-xs text-slate-500 font-bold uppercase tracking-wider mb-1">Lymph Nodes</p>
+                        <p className="font-semibold text-slate-900 text-lg">{selectedReport.details.lymphNodes}</p>
                       </div>
                     </div>
                   </section>
                   
                   <section>
-                    <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4 border-b pb-2">AI Generated Treatment Recommendations</h3>
-                    <ul className="space-y-3">
+                    <h3 className="text-sm font-bold text-slate-800 uppercase tracking-widest mb-6 border-b-2 border-slate-100 pb-2">AI Treatment Recommendations</h3>
+                    <ul className="space-y-4">
                       {selectedReport.details.recommendations.map((rec: string, idx: number) => (
-                        <li key={idx} className="flex items-start gap-3">
-                          <div className="mt-0.5 p-1 rounded-full bg-emerald-100 text-emerald-600">
-                            <Stethoscope size={14} />
-                          </div>
-                          <span className="text-slate-700 leading-relaxed">{rec}</span>
+                        <li key={idx} className="flex items-start gap-4">
+                          <div className="mt-1 w-2 h-2 rounded-full bg-slate-800 shrink-0" />
+                          <span className="text-slate-800 font-medium leading-relaxed">{rec}</span>
                         </li>
                       ))}
                     </ul>
@@ -260,11 +279,13 @@ export default function ReportsPage() {
               )}
             </div>
             
-            <div className="bg-slate-50 p-4 border-t border-slate-200 rounded-b-2xl text-xs text-slate-500 flex items-start gap-2 shrink-0">
-              <AlertCircle size={16} className="text-amber-500 shrink-0 mt-0.5" />
-              <p>
-                <strong>Disclaimer:</strong> This is an AI-generated clinical summary report. Extracted fields, analyses, and recommendations are review aids based on standard medical guidelines and are NOT a definitive medical diagnosis. All treatment plans must be validated by a licensed oncologist.
-              </p>
+            <div className="mt-auto p-10 pt-6">
+              <div className="border-t-2 border-slate-800 pt-6 flex items-start gap-3">
+                <AlertCircle size={20} className="text-slate-800 shrink-0" />
+                <p className="text-sm text-slate-600 leading-relaxed font-serif">
+                  <strong className="text-slate-900">AI-GENERATED CLINICAL REVIEW AID:</strong> This document was generated by Diagnex AI. Extracted fields, analyses, and recommendations are based on standard medical guidelines and are intended for review by qualified healthcare professionals. This is <strong>NOT</strong> a definitive medical diagnosis. All treatment plans must be validated by a licensed oncologist.
+                </p>
+              </div>
             </div>
           </motion.div>
         </div>
