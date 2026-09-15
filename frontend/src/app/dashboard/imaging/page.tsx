@@ -71,24 +71,7 @@ export default function ImagingPage() {
       })));
     } catch (err: any) {
       console.warn("API failed, falling back to dummy data for presentation mode:", err);
-      const DUMMY_SCANS = [
-        {
-          id: 'scan-1',
-          created_at: '2026-09-10T10:00:00Z',
-          modality: 'MG',
-          status: 'Analyzed: BI-RADS 2',
-          doctor: 'Dr. Sarah Jenkins',
-          imageUrl: '/images/mammogram-cover.png'
-        },
-        {
-          id: 'scan-2',
-          created_at: '2026-08-15T14:30:00Z',
-          modality: 'US',
-          status: 'Completed: No abnormalities',
-          doctor: 'Dr. Michael Chen',
-          imageUrl: '/images/ultrasound-cover.png'
-        }
-      ];
+      const DUMMY_SCANS: Scan[] = [];
       setScans(DUMMY_SCANS);
     } finally {
       setIsLoading(false);
